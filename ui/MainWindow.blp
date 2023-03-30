@@ -1,0 +1,319 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adjustment adj_warn_min {
+  lower: 1;
+  upper: 120;
+  value: 15;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+ApplicationWindow window {
+  default-width: 220;
+  default-height: 350;
+  title: "Vakt-i Salah";
+  icon-name: "vaktisalah";
+  show-menubar: false;
+  resizable: true;
+  hide-on-close: true;
+
+  [titlebar]
+  Adw.HeaderBar {
+    title-widget: Label {
+      label: "Vakt-i Salah";
+    };
+  }
+  
+  Adw.ToastOverlay toast_overlay {
+
+    child:
+    Stack stk_pages {
+      margin-start: 11;
+      margin-end: 11;
+      margin-top: 7;
+      margin-bottom: 11;
+
+      StackPage {
+        name: "main";
+        child: 
+        Box {
+          orientation: vertical;
+
+          CenterBox {
+
+            [center]
+            Box {
+              spacing: 3;
+              orientation: vertical;
+
+              Label lbl_district {
+                label: "District";
+                styles ["title-2"]
+              }
+              Label lbl_city {
+                label: "City";
+                styles ["dim-label"]
+              }
+            }
+
+            [end]
+            Button btn_settings {
+              child:
+              Image {
+                icon-name: "emblem-system-symbolic";
+              };
+              valign: start;
+              vexpand: false;
+            }
+          }
+          
+
+          Box {
+            margin-top: 11;
+
+            Label {
+              label: _("Gregorian:");
+              use-markup: true;
+              hexpand: true;
+              halign: start;
+            }
+
+            Label lbl_date_gregorian {
+              label: "00.01.0000";
+              halign: end;
+            }
+          }
+          Box {
+            Label {
+              label: _("Hijri:");
+              styles ["success"]
+              hexpand: true;
+              halign: start;
+            }
+
+            Label lbl_date_hijri {
+              label: "00.01.0000";
+              styles ["success"]
+              halign: end;
+            }
+          }
+
+          Separator {
+            margin-top: 7;
+            margin-bottom: 7;
+          }
+
+          Box {
+            spacing: 5;
+            orientation: vertical;
+            Box {
+              Label lbl_fajr {
+                label: _("Fajr");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_fajr_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+
+            Box {
+              Label lbl_sunrise {
+                label: _("Sunrise");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_sunrise_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+
+            Box {
+              Label lbl_dhuhr {
+                label: _("Dhuhr");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_dhuhr_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+
+            Box {
+              Label lbl_asr {
+                label: _("Asr");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_asr_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+
+            Box {
+              Label lbl_maghrib {
+                label: _("Maghrib");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_maghrib_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+
+            Box {
+              Label lbl_isha {
+                label: _("Isha");
+                halign: start;
+                hexpand: true;
+              }
+
+              Label lbl_isha_time {
+                label: "00:00";
+                halign: end;
+              }
+            }
+          }
+
+          Separator {
+            margin-top: 7;
+            margin-bottom: 7;
+          }
+
+          Box {
+            orientation: vertical;
+            vexpand: true;
+            valign: center;
+
+            Label lbl_next_prayer {
+              label: "to Dhuhr";
+              styles ["title-3"]
+            }
+
+            Label lbl_remaining_time {
+              label: "00:00:00";
+              styles ["title-3", "success", "shadow"]
+            }
+          }
+        };
+      }
+
+      StackPage {
+        name: "settings";
+        child: 
+        Box {
+          orientation: vertical;
+          spacing: 3;
+
+          CenterBox {
+            [start]
+            Button btn_theme_toggle {
+              child:
+              Image {
+                icon-name: "night-light-symbolic";
+              };
+            }
+            [center]
+            Label {
+              label: "Settings";
+              styles ["title-4"]
+            }
+            [end]
+            Button btn_to_mainscreen {
+              child:
+              Image {
+                icon-name: "go-previous";
+              };
+            }
+          }
+
+          Separator {
+            margin-top: 7;
+            margin-bottom: 7;
+          }
+
+          Box {
+            orientation: vertical;
+            spacing: 11;
+
+            Box {
+              spacing: 7;
+              Label {
+                label: _("Country:");
+              }
+
+              DropDown dd_country {
+                hexpand: true;
+                enable-search: true;
+              }
+            }
+
+            Box {
+              spacing: 7;
+              Label {
+                label: _("City:");
+              }
+
+              DropDown dd_city {
+                hexpand: true;
+                enable-search: true;
+              }
+            }
+
+            Box {
+              spacing: 7;
+              Label {
+                label: _("District:");
+              }
+
+              DropDown dd_district {
+                hexpand: true;
+                enable-search: true;
+              }
+            }
+
+            Box {
+              spacing: 7;
+              Label {
+                label: _("Warn Min.:");
+              }
+
+              SpinButton spn_warning_minutes {
+                adjustment: adj_warn_min;
+                hexpand: true;
+              }
+            }
+          }
+
+          Separator {
+            margin-top: 7;
+            margin-bottom: 7;
+          }
+
+          Button btn_save {
+            label: _("Save");
+            receives-default: true;
+          }
+
+          Label {
+            label: "<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open</small></a>";
+            use-markup: true;
+            valign: end;
+            vexpand: true;
+          }
+        };
+      }
+    };
+  }
+}
