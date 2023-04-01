@@ -1,0 +1,54 @@
+{
+    "id": "com.eminfedar.vaktisalah-gtk",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "22.08",
+    "sdk": "org.freedesktop.Sdk",
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
+    "command": "vaktisalah-gtk",
+    "finish-args": [
+        "--share=network",
+        "--socket=pulseaudio",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland"
+    ],
+
+    "build-options": {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin",
+        "env" : {
+            "CARGO_HOME" : "/run/build/vaktisalah-gtk/.cargo",
+            "LOCALIZATION_DIR": "./localization/"
+        }
+    },
+
+    "modules": [
+        {
+            "name": "vaktisalah-gtk",
+            "buildsystem": "simple",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/eminfedar/vaktisalah-gtk-rs.git",
+                    "tag": "v1.0.0"
+                }
+            ],
+            "build-options": {
+                "env": {
+                    "LOCALIZATION_DIR": "localization/"
+                }
+            },
+            "build-commands": [
+                "cargo --offline fetch --verbose",
+                "cargo --offline build --release --verbose",
+                "install -Dm755 ./target/release/vaktisalah-gtk-rs -t /app/bin/"
+            ],
+            "post-install": [
+                "install -Dm644 export/com.eminfedar.vaktisalah-gtk.svg /app/share/icons/hicolor/scalable/apps/com.eminfedar.vaktisalah-gtk.svg",
+                "install -Dm644 export/com.eminfedar.vaktisalah-gtk.desktop /app/share/applications/com.eminfedar.vaktisalah-gtk.desktop",
+                "install -Dm644 export/com.eminfedar.vaktisalah-gtk.appdata.xml /app/share/metainfo/com.eminfedar.vaktisalah-gtk.appdata.xml"
+            ]
+        }
+    ]
+}

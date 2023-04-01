@@ -72,7 +72,7 @@ ApplicationWindow window {
           Box {
             margin-top: 11;
 
-            Label {
+            Label lbl_gregorian {
               label: _("Gregorian:");
               use-markup: true;
               hexpand: true;
@@ -85,7 +85,7 @@ ApplicationWindow window {
             }
           }
           Box {
-            Label {
+            Label lbl_hijri {
               label: _("Hijri:");
               styles ["success"]
               hexpand: true;
@@ -225,8 +225,8 @@ ApplicationWindow window {
               };
             }
             [center]
-            Label {
-              label: "Settings";
+            Label lbl_settings {
+              label: _("Settings");
               styles ["title-4"]
             }
             [end]
@@ -249,7 +249,7 @@ ApplicationWindow window {
 
             Box {
               spacing: 7;
-              Label {
+              Label lbl_settings_country {
                 label: _("Country:");
               }
 
@@ -261,7 +261,7 @@ ApplicationWindow window {
 
             Box {
               spacing: 7;
-              Label {
+              Label lbl_settings_city {
                 label: _("City:");
               }
 
@@ -273,7 +273,7 @@ ApplicationWindow window {
 
             Box {
               spacing: 7;
-              Label {
+              Label lbl_settings_district {
                 label: _("District:");
               }
 
@@ -285,7 +285,7 @@ ApplicationWindow window {
 
             Box {
               spacing: 7;
-              Label {
+              Label lbl_warn_min {
                 label: _("Warn Min.:");
               }
 
@@ -306,7 +306,7 @@ ApplicationWindow window {
             receives-default: true;
           }
 
-          Label {
+          Label lbl_open_source {
             label: "<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open</small></a>";
             use-markup: true;
             valign: end;

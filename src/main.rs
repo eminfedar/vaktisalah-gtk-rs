@@ -15,6 +15,7 @@ mod ui;
 mod listitem;
 mod prayer;
 mod sound;
+mod translations;
 
 fn on_activate(application: &Application) {
     if application.windows().len() == 1 {
@@ -58,7 +59,7 @@ fn on_activate(application: &Application) {
 
 fn main() {  
     let application = Application::builder()
-        .application_id("com.eminfedar.vaktisalah")
+        .application_id("com.eminfedar.vaktisalah-gtk")
         .build();
 
     application.connect_activate(on_activate);

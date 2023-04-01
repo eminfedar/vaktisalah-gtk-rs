@@ -10,3 +10,5 @@ Cargo.lock
 **/*.rs.bk
 
 /ui/MainWindow.ui
+
+/.flatpak-builder/

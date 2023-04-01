@@ -1,0 +1,27 @@
+// Prayer Times
+"Fajr" => "İmsak"
+"Sunrise" => "Güneş"
+"Dhuhr" => "Öğle"
+"Asr" => "İkindi"
+"Maghrib" => "Akşam"
+"Isha" => "Yatsı"
+
+"to Fajr" => "İmsak'a"
+"to Sunrise" => "Güneş'e"
+"to Dhuhr" => "Öğle'ye"
+"to Asr" => "İkindi'ye"
+"to Maghrib" => "Akşam'a"
+"to Isha" => "Yatsı'ya"
+
+// UI
+"Gregorian" => "Gregoryen"
+"Hijri" => "Hicri"
+"Settings" => "Ayarlar"
+"Country" => "Ülke"
+"City" => "Şehir"
+"District" => "İlçe"
+"Save" => "Kaydet"
+"Warn Min." => "Uyarı Dk."
+"<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open</small></a>" 
+=>
+"<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>Bu projenin kaynak kodları açıktır</small></a>"

@@ -1,6 +1,6 @@
 use std::{fs::File, process::Command, io::{Write, self}};
 
-// Example custom build script.
+
 fn main() -> io::Result<()> {
     // Tell Cargo that if the given file changes, to rerun this build script.
     let output = Command::new("blueprint-compiler")
@@ -13,6 +13,6 @@ fn main() -> io::Result<()> {
 
     //println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=ui/MainWindow.blp");
-
+    
     Ok(())
 }

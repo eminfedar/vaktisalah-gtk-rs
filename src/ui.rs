@@ -1,11 +1,13 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::sync::atomic::{AtomicU8, Ordering};
 use std::time::Duration;
 
 use crate::networking::{self, update_prayer_times_on_network, PrayerTimesWithDate};
 use crate::prayer::{Prayer, RemainingTime};
 use crate::preferences::{save_preferences_json, PreferencesJson};
 use crate::sound::play_alert;
+use crate::translations::translate_ui;
 use adw::{Application, ColorScheme, Toast, ToastOverlay};
 use chrono::{Days, Local, Utc};
 use gio::subclass::prelude::ObjectSubclassType;
@@ -16,8 +18,11 @@ use gtk::{prelude::*, PropertyExpression, SpinButton};
 use gtk::{ApplicationWindow, Builder, DropDown, Stack};
 use gtk::{Button, Label};
 use gtk4 as gtk;
+use simple_localization::tr;
 
 use crate::listitem::ListItemIDName;
+
+static NEXT_PRAYER:AtomicU8 = AtomicU8::new(0);
 
 // ==========  UI BUILDING  ===========
 pub fn build_ui(application: &Application, preferences_json: PreferencesJson) {
@@ -29,13 +34,12 @@ pub fn build_ui(application: &Application, preferences_json: PreferencesJson) {
 
     // Setup UI
     setup_stack_navigation_ui(&builder);
-
     setup_dark_mode_toggle(&builder);
 
     let preferences_json_rc = Rc::new(RefCell::new(preferences_json));
     setup_settings_ui(&builder, Rc::clone(&preferences_json_rc));
-
     setup_city_labels(&builder, Rc::clone(&preferences_json_rc));
+    translate_ui(&builder);
 
     // Show window
     window.show();
@@ -494,16 +498,22 @@ fn update_ui(
     )
     .unwrap();
 
-    // Display dates
-    let lbl_date_gregorian: Label = builder.object("lbl_date_gregorian").unwrap();
-    let lbl_date_hijri: Label = builder.object("lbl_date_hijri").unwrap();
+    // Update some stuff after prayer time changed
+    if NEXT_PRAYER.load(Ordering::Relaxed) != remaining_time.next_prayer as u8 {
+        // Display dates
+        let lbl_date_gregorian: Label = builder.object("lbl_date_gregorian").unwrap();
+        let lbl_date_hijri: Label = builder.object("lbl_date_hijri").unwrap();
 
-    lbl_date_gregorian.set_text(&Utc::now().format("%d %B %Y").to_string());
-    lbl_date_hijri.set_text(&today_prayers.HicriTarihUzun);
-    lbl_date_hijri.set_tooltip_text(Some(&today_prayers.HicriTarihKisa));
+        lbl_date_gregorian.set_text(&Utc::now().format("%d %B %Y").to_string());
+        lbl_date_hijri.set_text(&today_prayers.HicriTarihUzun);
+        lbl_date_hijri.set_tooltip_text(Some(&today_prayers.HicriTarihKisa));
 
-    // Colorize Current Prayer
-    colorize_current_prayer_label(builder, &today_prayers, remaining_time.next_prayer);
+        // Colorize Current Prayer
+        colorize_current_prayer_label(builder, &today_prayers, remaining_time.next_prayer);
+
+        NEXT_PRAYER.store(remaining_time.next_prayer as u8, Ordering::Relaxed);
+        dbg!(&NEXT_PRAYER);
+    }
 
     // Display Remaining Time
     let remaining_time_str = format!(
@@ -565,37 +575,37 @@ fn colorize_current_prayer_label(
             lbl_sunrise.add_css_class("success");
             lbl_sunrise_time.add_css_class("success");
 
-            "to Sunrise"
+            tr("to Sunrise")
         }
         Prayer::Dhuhr => {
             lbl_dhuhr.add_css_class("success");
             lbl_dhuhr_time.add_css_class("success");
 
-            "to Dhuhr"
+            tr("to Dhuhr")
         }
         Prayer::Asr => {
             lbl_asr.add_css_class("success");
             lbl_asr_time.add_css_class("success");
 
-            "to Asr"
+            tr("to Asr")
         }
         Prayer::Maghrib => {
             lbl_maghrib.add_css_class("success");
             lbl_maghrib_time.add_css_class("success");
 
-            "to Maghrib"
+            tr("to Maghrib")
         }
         Prayer::Isha => {
             lbl_isha.add_css_class("success");
             lbl_isha_time.add_css_class("success");
 
-            "to Isha"
+            tr("to Isha")
         }
         _ => {
             lbl_fajr.add_css_class("success");
             lbl_fajr_time.add_css_class("success");
 
-            "to Fajr"
+            tr("to Fajr")
         }
     };
     lbl_next_prayer.set_text(next_prayer_name);

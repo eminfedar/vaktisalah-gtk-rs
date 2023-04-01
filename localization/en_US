@@ -1,0 +1,27 @@
+// Prayer Times
+"Fajr" => "Fajr"
+"Sunrise" => "Sunrise"
+"Dhuhr" => "Dhuhr"
+"Asr" => "Asr"
+"Maghrib" => "Maghrib"
+"Isha" => "Isha"
+
+"to Fajr" => "to Fajr"
+"to Sunrise" => "to Sunrise"
+"to Dhuhr" => "to Dhuhr"
+"to Asr" => "to Asr"
+"to Maghrib" => "to Maghrib"
+"to Isha" => "to Isha"
+
+// UI
+"Gregorian" => "Gregorian"
+"Hijri" => "Hijri"
+"Settings" => "Settings"
+"Country" => "Country"
+"City" => "City"
+"District" => "District"
+"Save" => "Save"
+"Warn Min." => "Warn Min."
+"<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open</small></a>" 
+=>
+"<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open</small></a>"
