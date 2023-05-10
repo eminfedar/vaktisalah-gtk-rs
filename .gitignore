@@ -11,4 +11,7 @@ Cargo.lock
 
 /ui/MainWindow.ui
 
-/.flatpak-builder/
+# Flatpak
+.flatpak-builder/
+build-dir
+.flatpak/
