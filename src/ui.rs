@@ -512,7 +512,6 @@ fn update_ui(
         colorize_current_prayer_label(builder, &today_prayers, remaining_time.next_prayer);
 
         NEXT_PRAYER.store(remaining_time.next_prayer as u8, Ordering::Relaxed);
-        dbg!(&NEXT_PRAYER);
     }
 
     // Display Remaining Time

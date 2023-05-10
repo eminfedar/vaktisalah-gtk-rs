@@ -12,7 +12,7 @@ codegen-units = 1
 
 [dependencies]
 # GTK
-adw = { version = "0.3.1", package = "libadwaita" }
+adw = { version = "0.4.1", package = "libadwaita" }
 gtk4 = { version = "0.6.4", features = ["gnome_42"] }
 glib = { version = "0.17.5" }
 gio = { version = "0.17.4" }
