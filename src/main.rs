@@ -59,7 +59,7 @@ fn on_activate(application: &Application) {
 
 fn main() {  
     let application = Application::builder()
-        .application_id("com.eminfedar.vaktisalah-gtk")
+        .application_id("io.github.eminfedar.vaktisalah-gtk-rs")
         .build();
 
     application.connect_activate(on_activate);

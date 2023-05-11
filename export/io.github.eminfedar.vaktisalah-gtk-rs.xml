@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>com.eminfedar.vaktisalah-gtk</id>
+  <id>io.github.eminfedar.vaktisalah-gtk-rs</id>
   
   <name>Vakt-i Salah</name>
   <developer_name>Emin Fedar</developer_name>
@@ -16,7 +16,7 @@
     </p>
   </description>
   
-  <launchable type="desktop-id">com.eminfedar.vaktisalah-gtk.desktop</launchable>
+  <launchable type="desktop-id">io.github.eminfedar.vaktisalah-gtk-rs.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <caption>Main Window - Light Theme</caption>
