@@ -13,9 +13,9 @@ codegen-units = 1
 [dependencies]
 # GTK
 adw = { version = "0.4.1", package = "libadwaita" }
-gtk4 = { version = "0.6.4", features = ["gnome_42"] }
-glib = { version = "0.17.5" }
-gio = { version = "0.17.4" }
+gtk4 = { version = "0.6.6", features = ["gnome_42"] }
+glib = { version = "0.17.9" }
+gio = { version = "0.17.9" }
 
 # HTTP Request
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json"] }
