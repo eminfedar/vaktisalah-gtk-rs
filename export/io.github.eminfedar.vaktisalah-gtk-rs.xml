@@ -5,14 +5,14 @@
   <name>Vakt-i Salah</name>
   <developer_name>Emin Fedar</developer_name>
   <summary>GTK4 version of Vakt-i Salah (Prayer Times)</summary>
-  <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk</url>
+  <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk-rs</url>
   
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LGPL-3.0</project_license>
   
   <description>
     <p>
-      a GTK4 Based Prayer Times application. It uses Turkey&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs)&apos;s prayer times
+      GTK4 Based Prayer Times application. It uses Turkey&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs)&apos;s prayer times
     </p>
   </description>
   
@@ -38,12 +38,12 @@
       <caption>Settings Window - Dark Theme</caption>
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_dark.png</image>
     </screenshot>
-    
+
   </screenshots>
   
   <releases>
-    <release version="1.0.0" date="2023-04-01"></release>
-    <release version="1.0.1" date="2023-05-13"></release>
+    <release version="v1.0.1" date="2023-05-13"></release>
+    <release version="v1.0.0" date="2023-04-01"></release>
   </releases>
   <content_rating type="oars-1.1" />
 </component>
