@@ -18,25 +18,32 @@
   
   <launchable type="desktop-id">io.github.eminfedar.vaktisalah-gtk-rs.desktop</launchable>
   <screenshots>
+
     <screenshot type="default">
       <caption>Main Window - Light Theme</caption>
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_light.png</image>
     </screenshot>
+
     <screenshot>
       <caption>Main Window - Dark Theme</caption>
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_dark.png</image>
     </screenshot>
-    <caption>Settings Window - Light Theme</caption>
+
+    <screenshot>
+      <caption>Settings Window - Light Theme</caption>
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_light.png</image>
     </screenshot>
+
     <screenshot>
       <caption>Settings Window - Dark Theme</caption>
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_dark.png</image>
     </screenshot>
+    
   </screenshots>
   
   <releases>
     <release version="1.0.0" date="2023-04-01"></release>
+    <release version="1.0.1" date="2023-05-13"></release>
   </releases>
   <content_rating type="oars-1.1" />
 </component>
