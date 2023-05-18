@@ -11,7 +11,6 @@
         "--share=network",
         "--socket=pulseaudio",
         "--share=ipc",
-        "--socket=x11",
         "--socket=fallback-x11",
         "--socket=wayland"
     ],
@@ -33,6 +32,7 @@
             "name": "sassc",
             "buildsystem":"meson",
             "builddir": true,
+            "cleanup": ["*"],
             "sources": [
                 {
                     "type":"git",
@@ -60,7 +60,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/eminfedar/vaktisalah-gtk-rs",
-                    "tag": "v1.0.1"
+                    "tag": "v1.0.2"
                 },
                 "cargo-sources.json"
             ],

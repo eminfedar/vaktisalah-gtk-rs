@@ -1,7 +1,6 @@
-use gtk4::{Builder, Label, Button};
 use gtk4::prelude::ButtonExt;
+use gtk4::{Builder, Button, Label};
 use simple_localization::tr;
-
 
 macro_rules! translations_labels {
     ($builder:ident, $($widget:ident => $val:expr),* $(,)*) => {
@@ -22,7 +21,6 @@ macro_rules! translations_buttons {
 }
 
 pub fn translate_ui(builder: &Builder) {
-
     translations_labels! {
         builder,
         lbl_gregorian => "Gregorian",

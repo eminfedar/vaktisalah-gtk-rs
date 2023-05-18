@@ -1,28 +1,28 @@
-use adw::{Application};
-use gtk4 as gtk;
+use adw::Application;
 use gtk::prelude::*;
+use gtk4 as gtk;
 
-use ui::build_ui;
 use networking::is_prayer_times_valid;
 use preferences::read_preferences_json_file;
+use ui::build_ui;
 
 use crate::networking::update_prayer_times_on_network;
 use crate::preferences::save_preferences_json;
 
-mod preferences;
-mod networking;
-mod ui;
 mod listitem;
+mod networking;
 mod prayer;
+mod preferences;
 mod sound;
 mod translations;
+mod ui;
 
 fn on_activate(application: &Application) {
     if application.windows().len() == 1 {
         application.windows().first().as_ref().unwrap().present();
         return;
     }
-    
+
     // Read preferences
     let mut preferences_json = match read_preferences_json_file() {
         Ok(p) => p,
@@ -57,7 +57,7 @@ fn on_activate(application: &Application) {
     build_ui(application, preferences_json);
 }
 
-fn main() {  
+fn main() {
     let application = Application::builder()
         .application_id("io.github.eminfedar.vaktisalah-gtk-rs")
         .build();
@@ -65,5 +65,4 @@ fn main() {
     application.connect_activate(on_activate);
 
     application.run();
-    
 }

@@ -1,6 +1,5 @@
-
-use chrono::{Utc, Days};
-use serde::{Serialize, Deserialize};
+use chrono::{Days, Utc};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 use crate::preferences::PreferencesJson;
@@ -17,7 +16,7 @@ pub struct PrayerTimesWithDate {
 
     pub MiladiTarihKisa: String,
     pub HicriTarihKisa: String,
-    pub HicriTarihUzun: String
+    pub HicriTarihUzun: String,
 }
 
 #[allow(non_snake_case)]
@@ -25,13 +24,13 @@ pub struct PrayerTimesWithDate {
 pub struct DistrictResponse {
     pub IlceAdi: String,
     pub IlceAdiEn: String,
-    pub IlceID: String
+    pub IlceID: String,
 }
 
 /// Basic HTTP Request
 fn get_request(endpoint: &str, id: &str) -> Result<reqwest::blocking::Response, reqwest::Error> {
     let url = format!("http://ezanvakti.herokuapp.com/{}/{}", endpoint, id);
-    
+
     reqwest::blocking::get(url)
 }
 
@@ -55,7 +54,6 @@ pub fn get_district_list(city_id: &str) -> Result<serde_json::Value, reqwest::Er
 
     Ok(json_obj)
 }
-
 
 pub fn is_prayer_times_valid(preferences: &PreferencesJson) -> bool {
     let today = Utc::now();

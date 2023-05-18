@@ -1,5 +1,8 @@
-use std::{fs::File, process::Command, io::{Write, self}};
-
+use std::{
+    fs::File,
+    io::{self, Write},
+    process::Command,
+};
 
 fn main() -> io::Result<()> {
     // Tell Cargo that if the given file changes, to rerun this build script.
@@ -13,6 +16,6 @@ fn main() -> io::Result<()> {
 
     //println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=ui/MainWindow.blp");
-    
+
     Ok(())
 }

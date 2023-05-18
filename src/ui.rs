@@ -22,7 +22,7 @@ use simple_localization::tr;
 
 use crate::listitem::ListItemIDName;
 
-static NEXT_PRAYER:AtomicU8 = AtomicU8::new(0);
+static NEXT_PRAYER: AtomicU8 = AtomicU8::new(0);
 
 // ==========  UI BUILDING  ===========
 pub fn build_ui(application: &Application, preferences_json: PreferencesJson) {
@@ -192,9 +192,6 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
     dd_district.set_model(Some(&district_list_model));
     dd_district.set_selected(selected_district_position as u32);
 
-
-
-
     // == CONNECT SIGNALS
     let preferences_json_rc_clone = Rc::clone(&preferences_json_rc_cell);
     let dd_city_rc = Rc::new(dd_city);
@@ -233,10 +230,7 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
                     dd_city_rc_clone.set_model(Some(&city_list_model));
                 }
                 Err(e) => {
-                    eprintln!(
-                        "[Error] while getting district list from network:\n{}",
-                        e.to_string()
-                    );
+                    eprintln!("[Error] while getting district list from network:\n{}", e);
                     toast_overlay.add_toast(Toast::new("Network Error."));
                     toast_overlay.show();
                 }
@@ -279,10 +273,7 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
                     dd_district_rc_clone.set_model(Some(&district_list_model));
                 }
                 Err(e) => {
-                    eprintln!(
-                        "[Error] while getting district list from network:\n{}",
-                        e.to_string()
-                    );
+                    eprintln!("[Error] while getting district list from network:\n{}", e);
                     toast_overlay.add_toast(Toast::new("Network Error."));
                     toast_overlay.show();
                 }
@@ -298,7 +289,7 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
 
     let stk_pages: Stack = builder.object("stk_pages").unwrap();
     stk_pages.set_visible_child_name("main");
-    
+
     let btn_save: Button = builder.object("btn_save").unwrap();
     let toast_overlay: ToastOverlay = builder.object("toast_overlay").unwrap();
 
@@ -329,7 +320,7 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
             Err(e) => {
                 eprintln!(
                     "[Error] Failed to upgrade Prayer Times from internet:\n{}",
-                    e.to_string()
+                    e
                 );
 
                 toast_overlay.add_toast(Toast::new("Network Error."));
@@ -341,10 +332,7 @@ fn setup_settings_ui(builder: &Builder, preferences_json_rc_cell: Rc<RefCell<Pre
         match save_preferences_json(&p) {
             Ok(_) => (),
             Err(e) => {
-                eprintln!(
-                    "[Error] Failed to save preferences.json:\n{}",
-                    e.to_string()
-                );
+                eprintln!("[Error] Failed to save preferences.json:\n{}", e);
 
                 toast_overlay.add_toast(Toast::new("Saving the settings failed."));
                 toast_overlay.show();
@@ -382,11 +370,7 @@ fn should_warn(
     let warn_min = preferences_json.preferences.warning_minutes as u32;
     let current_min = remaining_time.hours as u32 * 60 + remaining_time.minutes as u32;
 
-    if current_min == warn_min && remaining_time.seconds == 0 {
-        true
-    } else {
-        false
-    }
+    current_min == warn_min && remaining_time.seconds == 0
 }
 
 fn calculate_remaining_time(
@@ -400,7 +384,6 @@ fn calculate_remaining_time(
         preferences_json
             .prayer_times
             .get(&today_formatted)
-            .clone()
             .unwrap()
             .to_owned(),
     )
@@ -415,7 +398,6 @@ fn calculate_remaining_time(
         preferences_json
             .prayer_times
             .get(&tomorrow_formatted)
-            .clone()
             .unwrap()
             .to_owned(),
     )
@@ -434,17 +416,17 @@ fn calculate_remaining_time(
     let now = Local::now();
 
     for (i, prayer_time) in today_prayer_times_array.iter().enumerate() {
-        let mut hours = (&prayer_time[0..2]).parse::<i32>().unwrap();
-        let minutes = (&prayer_time[3..5]).parse::<i32>().unwrap();
+        let mut hours = (prayer_time[0..2]).parse::<i32>().unwrap();
+        let minutes = (prayer_time[3..5]).parse::<i32>().unwrap();
 
         if i == 6 {
             hours += 24;
         }
 
         let now_formatted = now.time().format("%H:%M:%S").to_string();
-        let now_hours = (&now_formatted[0..2]).parse::<i32>().unwrap();
-        let now_minutes = (&now_formatted[3..5]).parse::<i32>().unwrap();
-        let now_seconds = (&now_formatted[6..8]).parse::<i32>().unwrap();
+        let now_hours = (now_formatted[0..2]).parse::<i32>().unwrap();
+        let now_minutes = (now_formatted[3..5]).parse::<i32>().unwrap();
+        let now_seconds = (now_formatted[6..8]).parse::<i32>().unwrap();
 
         if now_hours > hours {
             continue;
@@ -492,7 +474,6 @@ fn update_ui(
         preferences_json
             .prayer_times
             .get(&today_formatted)
-            .clone()
             .unwrap()
             .to_owned(),
     )
