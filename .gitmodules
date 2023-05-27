@@ -1,0 +1,3 @@
+[submodule "io.github.eminfedar.vaktisalah-gtk-rs"]
+	path = flatpak
+	url = https://github.com/flathub/io.github.eminfedar.vaktisalah-gtk-rs

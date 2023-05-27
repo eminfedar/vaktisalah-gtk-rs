@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Vakt-i Salah
-Version=1.0.0
+Version=1.0.3
 Exec=vaktisalah
-Comment=a Cross-Platform Prayer Times application.
+Comment=Rust & GTK4 version of Vakt-i Salah (Prayer Times) Application
 Icon=io.github.eminfedar.vaktisalah-gtk-rs
 Type=Application
 Terminal=false
