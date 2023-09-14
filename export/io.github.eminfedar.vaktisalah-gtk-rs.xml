@@ -8,7 +8,7 @@
   <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk-rs</url>
   
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>LGPL-3.0</project_license>
+  <project_license>MIT</project_license>
   
   <description>
     <p>
@@ -42,6 +42,7 @@
   </screenshots>
   
   <releases>
+    <release version="v1.1.0" date="--"></release>
     <release version="v1.0.3" date="2023-05-27"></release>
     <release version="v1.0.2" date="2023-05-18"></release>
     <release version="v1.0.1" date="2023-05-13"></release>

@@ -2,11 +2,12 @@ use std::cell::Cell;
 
 use glib::once_cell::sync::Lazy;
 use glib::{ParamSpec, ParamSpecString, Value};
-use gtk4::glib;
-use gtk4::prelude::*;
-use gtk4::subclass::prelude::*;
+use gtk::glib;
+use gtk::prelude::*;
+use gtk::subclass::prelude::*;
+use relm4::gtk;
 
-use crate::ui::ListItemIDNameGtk;
+use crate::ListItemIDNameGtk;
 
 // Object holding the state
 #[derive(Default)]
@@ -37,11 +38,15 @@ impl ObjectImpl for ListItemIDName {
     fn set_property(&self, _id: usize, value: &Value, pspec: &ParamSpec) {
         match pspec.name() {
             "itemId" => {
-                let v = value.get().expect("The value needs to be of type `i32`.");
+                let v = value
+                    .get()
+                    .expect("The value needs to be of type `String`.");
                 self.item_id.replace(v);
             }
             "itemName" => {
-                let v = value.get().expect("The value needs to be of type `i32`.");
+                let v = value
+                    .get()
+                    .expect("The value needs to be of type `String`.");
                 self.item_name.replace(v);
             }
             _ => unimplemented!(),
