@@ -1,6 +1,10 @@
 # vaktisalah-gtk-rs
-Rust &amp; GTK4 version of Vakt-i Salah (Prayer Times) Application
+Rust &amp; Relm4(GTK4) version of Vakt-i Salah (Prayer Times) Application
 
-![main_light](https://github.com/eminfedar/vaktisalah-gtk-rs/raw/main/export/main_light.png)
+[![flathub](https://dl.flathub.org/assets/badges/flathub-badge-en.png)](https://flathub.org/apps/io.github.eminfedar.vaktisalah-gtk-rs)
 
-![](https://github.com/eminfedar/vaktisalah-gtk-rs/raw/main/export/settings_light.png)
+## Images
+
+![main_light](/export/main_light.png)
+
+![settings_light](/export/settings_light.png)
