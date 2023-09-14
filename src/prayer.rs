@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use crate::preferences::PreferencesJson;
 use chrono::{Days, Local, Utc};
+use rust_i18n::t;
 use serde::{Deserialize, Serialize};
 
 #[repr(u8)]
@@ -40,13 +41,13 @@ impl From<u8> for Prayer {
 impl Display for Prayer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let p = match self {
-            Prayer::Fajr => "to Fajr",
-            Prayer::Sunrise => "to Sunrise",
-            Prayer::Dhuhr => "to Dhuhr",
-            Prayer::Asr => "to Asr",
-            Prayer::Maghrib => "to Maghrib",
-            Prayer::Isha => "to Isha",
-            Prayer::FajrNextDay => "to FajrNextDay",
+            Prayer::Fajr => t!("to Fajr"),
+            Prayer::Sunrise => t!("to Sunrise"),
+            Prayer::Dhuhr => t!("to Dhuhr"),
+            Prayer::Asr => t!("to Asr"),
+            Prayer::Maghrib => t!("to Maghrib"),
+            Prayer::Isha => t!("to Isha"),
+            Prayer::FajrNextDay => t!("to Fajr"),
         };
 
         write!(f, "{}", p)

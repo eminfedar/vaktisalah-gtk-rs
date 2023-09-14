@@ -1,5 +1,9 @@
 use std::time::Duration;
 
+use rust_i18n::i18n;
+use rust_i18n::t;
+i18n!("locales", fallback = "en");
+
 use adw::{Application, Toast};
 use gio::prelude::ApplicationExt;
 use gio::Notification;
@@ -59,7 +63,7 @@ struct App {
     district_list_model: gio::ListStore,
 
     // MainWindow
-    toast_message: &'static str,
+    toast_message: String,
     current_page: &'static str,
 
     // Prayer times
@@ -274,7 +278,7 @@ impl AsyncComponent for App {
                 #[template_child]
                 toast_overlay {
                     #[track = "model.changed(App::toast_message())"]
-                    add_toast: Toast::builder().title(model.toast_message).timeout(3).build()
+                    add_toast: Toast::builder().title(model.toast_message.as_str()).timeout(3).build()
                 }
             },
         }
@@ -315,7 +319,6 @@ impl AsyncComponent for App {
 
         // Calculate remaining time
         let todays_prayers = prayer::get_prayer_times_with_date(&preferences_json, 0);
-        dbg!(&todays_prayers);
         let tomorrows_prayers = prayer::get_prayer_times_with_date(&preferences_json, 1);
         let remaining_time = prayer::calculate_remaining_time(&todays_prayers, &tomorrows_prayers);
         let next_prayer = remaining_time.map(|v| v.next_prayer);
@@ -329,7 +332,7 @@ impl AsyncComponent for App {
             city_list_model,
             district_list_model,
 
-            toast_message: "",
+            toast_message: String::from(""),
 
             next_prayer,
             remaining_time,
@@ -378,7 +381,7 @@ impl AsyncComponent for App {
                     Err(e) => {
                         eprintln!("[Error] Failed to save preferences.json: {e:?}");
 
-                        self.set_toast_message("Saving the settings failed.");
+                        self.set_toast_message(t!("Saving settings failed"));
 
                         return;
                     }
@@ -412,7 +415,7 @@ impl AsyncComponent for App {
                     }
                     Err(e) => {
                         eprintln!("[Error] while getting city list from network: {e:?}");
-                        self.set_toast_message("Network Error.");
+                        self.set_toast_message(t!("Network Error"));
                     }
                 };
             }
@@ -441,7 +444,7 @@ impl AsyncComponent for App {
                     }
                     Err(e) => {
                         eprintln!("[Error] While getting district list from network: {e:?}");
-                        self.set_toast_message("Network Error.");
+                        self.set_toast_message(t!("Network Error"));
                     }
                 };
             }
@@ -472,14 +475,13 @@ impl AsyncComponent for App {
             }
 
             Message::SaveSettings => {
-                println!("Saving settings!");
                 // Update prayer times
                 match update_prayer_times_on_network(&mut self.preferences_json).await {
-                    Ok(_) => self.set_toast_message("Prayer times updated."),
+                    Ok(_) => self.set_toast_message(t!("Prayer times updated")),
                     Err(e) => {
                         eprintln!("[Error] Failed to upgrade Prayer Times from internet: {e:?}");
 
-                        self.set_toast_message("Network Error.");
+                        self.set_toast_message(t!("Network Error"));
 
                         return;
                     }
@@ -487,11 +489,11 @@ impl AsyncComponent for App {
 
                 // Save latest preferences struct to the .json file
                 match save_preferences_json(&self.preferences_json).await {
-                    Ok(_) => self.set_toast_message("Settings saved."),
+                    Ok(_) => self.set_toast_message(t!("Settings saved")),
                     Err(e) => {
                         eprintln!("[Error] Failed to save preferences.json: {e:?}");
 
-                        self.set_toast_message("Saving the settings failed.");
+                        self.set_toast_message(t!("Saving settings failed"));
 
                         return;
                     }
@@ -540,17 +542,16 @@ impl AsyncComponent for App {
 
                     if should_warn {
                         // Send notification
-                        let notif = Notification::new(
-                            format!(
-                                "{} minutes left {}!",
-                                self.preferences_json.preferences.warning_minutes, r.next_prayer
-                            )
-                            .as_str(),
+                        let msg = t!(
+                            "Prayer times left",
+                            minutes = self.preferences_json.preferences.warning_minutes,
+                            prayer = r.next_prayer
                         );
+                        let notif = Notification::new(&msg);
 
                         let app = root.application().unwrap();
 
-                        app.send_notification(Some("prayer-time-warsssning"), &notif);
+                        app.send_notification(Some("prayer-time-warn"), &notif);
 
                         std::thread::spawn(|| {
                             play_alert();
@@ -576,6 +577,8 @@ fn on_activate(application: &Application) {
 }
 
 fn main() {
+    rust_i18n::set_locale(current_locale::current_locale().unwrap().as_str());
+
     let preferences_json = match read_preferences_json_file() {
         Ok(p) => p,
         Err(err) => {

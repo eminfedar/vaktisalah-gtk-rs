@@ -34,5 +34,6 @@ dirs = "5.0.0"
 
 # Utils
 once_cell = "1.17"
-simple-localization = "0.2"
+rust-i18n = { version= "2", default-features = false }
+current_locale = "*"
 tracker = "0.2.1"
