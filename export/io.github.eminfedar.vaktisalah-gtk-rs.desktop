@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Vakt-i Salah
-Version=2.0.1
+Version=1.0
 Exec=vaktisalah-gtk-rs
 Comment=Rust & GTK4 version of Vakt-i Salah (Prayer Times) Application
 Icon=io.github.eminfedar.vaktisalah-gtk-rs
