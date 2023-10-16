@@ -6,34 +6,31 @@ edition = "2021"
 [profile.release]
 strip = true
 opt-level = 3
-codegen-units = 1
+# codegen-units = 1
 lto = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 # GTK
-relm4 = { git = "https://github.com/Relm4/Relm4.git", branch="main", features = ["libadwaita", "macros", "gnome_43"] }
-tokio = { version = "1.28", features = ["fs", "time"]}
+relm4 = { version = "0.7.0-beta.2", features = ["libadwaita", "macros", "gnome_43"] }
+tokio = { version = "1", features = ["fs", "time"]}
 
 # HTTP Request
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json"] }
 
 # Timing
-chrono = "0.4.24"
+chrono = "0.4"
 
 # JSON Parsing
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
 # Audio Playing
-rodio = { version = "0.17.1", default-features = false, features = ["vorbis"] }
-
-# Dirs
-dirs = "5.0.0"
+rodio = { version = "0.17", default-features = false, features = ["vorbis"] }
 
 # Utils
-once_cell = "1.17"
+once_cell = "1"
 rust-i18n = { version= "2", default-features = false }
-current_locale = "*"
-tracker = "0.2.1"
+current_locale = "0.1.1"
+tracker = "0.2"

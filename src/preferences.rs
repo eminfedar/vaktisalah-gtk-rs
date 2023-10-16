@@ -10,17 +10,15 @@ use relm4::tokio;
 static PREFERENCES_TEMPLATE: &str = include_str!("../data/preferences.json");
 
 static PREFERENCES_JSON_PATH: Lazy<PathBuf> = Lazy::new(|| {
-    let pathbuf = PathBuf::from(format!(
-        "{}/io.github.eminfedar.vaktisalah-gtk-rs/preferences.json",
-        dirs::config_dir().unwrap().to_str().unwrap()
-    ));
+    let mut preferences_pathbuf = relm4::gtk::glib::user_config_dir();
+    preferences_pathbuf.push("io.github.eminfedar.vaktisalah-gtk-rs/preferences.json");
 
-    if !pathbuf.exists() {
-        std::fs::create_dir_all(pathbuf.parent().unwrap()).unwrap();
-        std::fs::write(pathbuf.as_path(), PREFERENCES_TEMPLATE).unwrap();
+    if !preferences_pathbuf.exists() {
+        std::fs::create_dir_all(preferences_pathbuf.parent().unwrap()).unwrap();
+        std::fs::write(preferences_pathbuf.as_path(), PREFERENCES_TEMPLATE).unwrap();
     };
 
-    pathbuf
+    preferences_pathbuf
 });
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
