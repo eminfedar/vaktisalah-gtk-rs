@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+use once_cell::sync::Lazy;
 use rust_i18n::i18n;
 use rust_i18n::t;
 i18n!("locales", fallback = "en");
@@ -24,7 +25,6 @@ mod prayer;
 mod preferences;
 mod sound;
 mod ui_relm;
-//mod translations;
 
 use crate::listitem::ListItemIDName;
 use crate::networking::*;
@@ -32,6 +32,10 @@ use crate::prayer::*;
 use crate::preferences::*;
 use crate::sound::*;
 use crate::ui_relm::*;
+
+const CURRENT_TIME_LABEL_STYLE: &[&str] = &["success", "bold", "title-4"];
+static USER_LOCALE: Lazy<String> =
+    Lazy::new(|| current_locale::current_locale().unwrap_or_else(|_| String::from("en-US")));
 
 glib::wrapper! {
     pub struct ListItemIDNameGtk(ObjectSubclass<ListItemIDName>);
@@ -63,7 +67,7 @@ struct App {
     district_list_model: gio::ListStore,
 
     // MainWindow
-    toast_message: String,
+    toast: Option<adw::Toast>,
     current_page: &'static str,
 
     // Prayer times
@@ -76,6 +80,9 @@ struct App {
 #[derive(Debug)]
 enum CommandMessage {
     SecondTick,
+    GetCityList(String, String),
+    GetDistrictList(String, String),
+    SaveSettings,
 }
 
 #[derive(Debug)]
@@ -113,6 +120,14 @@ fn get_model_and_selected_position(
         .unwrap_or(0) as u32;
 
     (list_model, selected_position)
+}
+
+impl App {
+    fn set_toast_message(&mut self, msg: impl AsRef<str>) {
+        self.set_toast(Some(
+            Toast::builder().title(msg.as_ref()).timeout(2).build(),
+        ));
+    }
 }
 
 #[relm4::component(async)]
@@ -192,7 +207,10 @@ impl AsyncComponent for App {
 
                 #[template_child]
                 settings_page.spn_warning_minutes {
-                    connect_value_changed[sender] => move |btn| { sender.input(Message::WarningMinutesChanged(btn.value_as_int() as u8))}
+                    connect_value_changed[sender] => move |btn| { sender.input(Message::WarningMinutesChanged(btn.value_as_int() as u8))},
+
+                    #[track = "model.changed(App::preferences_json())"]
+                    set_value: model.preferences_json.preferences.warning_minutes.into()
                 },
 
 
@@ -212,36 +230,86 @@ impl AsyncComponent for App {
                     set_label: &model.preferences_json.preferences.city
                 },
 
+                // Prayer Time Labels
+                #[template_child]
+                main_page.prayer_times.lbl_fajr {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Fajr) || model.next_prayer == Some(Prayer::FajrNextDay) { CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+                #[template_child]
+                main_page.prayer_times.lbl_sunrise {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Sunrise) { CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+                #[template_child]
+                main_page.prayer_times.lbl_dhuhr {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Dhuhr){ CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+                #[template_child]
+                main_page.prayer_times.lbl_asr {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Asr){ CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+                #[template_child]
+                main_page.prayer_times.lbl_maghrib {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Maghrib){ CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+                #[template_child]
+                main_page.prayer_times.lbl_isha {
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Isha){ CURRENT_TIME_LABEL_STYLE } else { &[] }
+                },
+
                 // Prayer Times
                 #[template_child]
                 main_page.prayer_times.lbl_fajr_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Imsak.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Imsak.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Fajr) || model.next_prayer == Some(Prayer::FajrNextDay) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
                 #[template_child]
                 main_page.prayer_times.lbl_sunrise_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Gunes.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Gunes.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Sunrise) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
                 #[template_child]
                 main_page.prayer_times.lbl_dhuhr_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Ogle.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Ogle.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Dhuhr) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
                 #[template_child]
                 main_page.prayer_times.lbl_asr_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Ikindi.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Ikindi.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Asr) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
                 #[template_child]
                 main_page.prayer_times.lbl_maghrib_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Aksam.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Aksam.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Maghrib) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
                 #[template_child]
                 main_page.prayer_times.lbl_isha_time {
                     #[track = "model.changed(App::todays_prayers())"]
-                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Yatsi.as_str())
+                    set_label: model.todays_prayers.as_ref().map_or("--:--", |v| v.Yatsi.as_str()),
+
+                    #[track = "model.changed(App::next_prayer())"]
+                    set_css_classes: if model.next_prayer == Some(Prayer::Isha) { CURRENT_TIME_LABEL_STYLE } else { &[] }
                 },
 
                 // Date
@@ -277,8 +345,8 @@ impl AsyncComponent for App {
 
                 #[template_child]
                 toast_overlay {
-                    #[track = "model.changed(App::toast_message())"]
-                    add_toast: Toast::builder().title(model.toast_message.as_str()).timeout(3).build()
+                    #[track = "model.changed(App::toast())"]
+                    add_toast?: model.toast.clone()
                 }
             },
         }
@@ -301,7 +369,13 @@ impl AsyncComponent for App {
 
         // Get Country List
         let (country_list_model, selected_country_position) = get_model_and_selected_position(
-            &preferences_json.countries,
+            if USER_LOCALE.as_str() == "tr-TR" {
+                &preferences_json.countries
+            } else if preferences_json.countries_en.is_some() {
+                preferences_json.countries_en.as_ref().unwrap()
+            } else {
+                &preferences_json.countries
+            },
             &preferences_json.preferences.country,
         );
 
@@ -332,7 +406,7 @@ impl AsyncComponent for App {
             city_list_model,
             district_list_model,
 
-            toast_message: String::from(""),
+            toast: None,
 
             next_prayer,
             remaining_time,
@@ -346,7 +420,7 @@ impl AsyncComponent for App {
 
         // Check if prayer times on .json file still up to date
         if !prayer::is_prayer_times_valid(&model.preferences_json) {
-            println!("Prayer times are not valid!");
+            println!("Prayer times are not valid, updating...");
             sender.input(Message::SaveSettings);
         }
 
@@ -359,7 +433,7 @@ impl AsyncComponent for App {
     async fn update(
         &mut self,
         msg: Self::Input,
-        _sender: AsyncComponentSender<Self>,
+        sender: AsyncComponentSender<Self>,
         _root: &Self::Root,
     ) {
         self.reset();
@@ -399,25 +473,14 @@ impl AsyncComponent for App {
                 let item_id: String = item.property("itemId");
                 let item_name: String = item.property("itemName");
 
-                println!("Selected country: {item_name} => {item_id}");
+                self.set_city_list_model(liststore_from_vec(&[]));
+                self.set_district_list_model(liststore_from_vec(&[]));
 
-                match networking::get_city_list(&item_id).await {
-                    Ok(list) => {
-                        self.update_preferences_json(|p| {
-                            p.cities = list;
-                            p.preferences.country = item_name;
-                        });
+                self.set_toast_message(t!("GettingCities"));
 
-                        let city_list =
-                            PreferencesJson::value_to_listitem(&self.preferences_json.cities);
-
-                        self.set_city_list_model(liststore_from_vec(&city_list));
-                    }
-                    Err(e) => {
-                        eprintln!("[Error] while getting city list from network: {e:?}");
-                        self.set_toast_message(t!("Network Error"));
-                    }
-                };
+                sender.oneshot_command(
+                    async move { CommandMessage::GetCityList(item_id, item_name) },
+                );
             }
             Message::CityChanged(selected_item) => {
                 let item = match selected_item {
@@ -428,25 +491,13 @@ impl AsyncComponent for App {
                 let item_id: String = item.property("itemId");
                 let item_name: String = item.property("itemName");
 
-                println!("Selected city: {item_name} => {item_id}");
+                self.set_district_list_model(liststore_from_vec(&[]));
 
-                match networking::get_district_list(&item_id).await {
-                    Ok(list) => {
-                        self.update_preferences_json(|p| {
-                            p.districts = list;
-                            p.preferences.city = item_name;
-                        });
+                self.set_toast_message(t!("GettingDistricts"));
 
-                        let district_list =
-                            PreferencesJson::value_to_listitem(&self.preferences_json.districts);
-
-                        self.set_district_list_model(liststore_from_vec(&district_list));
-                    }
-                    Err(e) => {
-                        eprintln!("[Error] While getting district list from network: {e:?}");
-                        self.set_toast_message(t!("Network Error"));
-                    }
-                };
+                sender.oneshot_command(async move {
+                    CommandMessage::GetDistrictList(item_id, item_name)
+                });
             }
 
             Message::DistrictChanged(selected_item) => {
@@ -467,54 +518,15 @@ impl AsyncComponent for App {
             }
 
             Message::WarningMinutesChanged(value) => {
-                println!("Warning minutes: {value}");
-
                 self.update_preferences_json(|p| {
                     p.preferences.warning_minutes = value;
                 });
             }
 
             Message::SaveSettings => {
-                // Update prayer times
-                match update_prayer_times_on_network(&mut self.preferences_json).await {
-                    Ok(_) => self.set_toast_message(t!("Prayer times updated")),
-                    Err(e) => {
-                        eprintln!("[Error] Failed to upgrade Prayer Times from internet: {e:?}");
+                self.set_toast_message(t!("Updating Prayer Times"));
 
-                        self.set_toast_message(t!("Network Error"));
-
-                        return;
-                    }
-                }
-
-                // Save latest preferences struct to the .json file
-                match save_preferences_json(&self.preferences_json).await {
-                    Ok(_) => self.set_toast_message(t!("Settings saved")),
-                    Err(e) => {
-                        eprintln!("[Error] Failed to save preferences.json: {e:?}");
-
-                        self.set_toast_message(t!("Saving settings failed"));
-
-                        return;
-                    }
-                }
-
-                self.set_todays_prayers(prayer::get_prayer_times_with_date(
-                    &self.preferences_json,
-                    0,
-                ));
-                self.set_tomorrows_prayers(prayer::get_prayer_times_with_date(
-                    &self.preferences_json,
-                    1,
-                ));
-                self.set_remaining_time(prayer::calculate_remaining_time(
-                    &self.todays_prayers,
-                    &self.tomorrows_prayers,
-                ));
-                self.set_next_prayer(self.remaining_time.map(|v| v.next_prayer));
-
-                self.set_current_page("main");
-                self.update_preferences_json(|_| {}); // update signal
+                sender.oneshot_command(async move { CommandMessage::SaveSettings });
             }
         }
     }
@@ -533,6 +545,7 @@ impl AsyncComponent for App {
                     &self.todays_prayers,
                     &self.tomorrows_prayers,
                 ));
+                self.set_next_prayer(self.remaining_time.map(|v| v.next_prayer));
 
                 if let Some(r) = self.remaining_time.as_ref() {
                     let warn_min = self.preferences_json.preferences.warning_minutes as u32;
@@ -566,6 +579,91 @@ impl AsyncComponent for App {
                     CommandMessage::SecondTick
                 });
             }
+            CommandMessage::GetCityList(item_id, item_name) => {
+                // println!("Selected country: {item_name} => {item_id}");
+                match networking::get_city_list(&item_id).await {
+                    Ok(list) => {
+                        self.update_preferences_json(|p| {
+                            p.cities = list;
+                            p.preferences.country = item_name;
+                        });
+
+                        let city_list =
+                            PreferencesJson::value_to_listitem(&self.preferences_json.cities);
+
+                        self.set_city_list_model(liststore_from_vec(&city_list));
+                    }
+                    Err(e) => {
+                        eprintln!("[Error] while getting city list from network: {e:?}");
+                        self.set_toast_message(t!("Network Error"));
+                    }
+                };
+            }
+
+            CommandMessage::GetDistrictList(item_id, item_name) => {
+                // println!("Selected city: {item_name} => {item_id}");
+                match networking::get_district_list(&item_id).await {
+                    Ok(list) => {
+                        self.update_preferences_json(|p| {
+                            p.districts = list;
+                            p.preferences.city = item_name;
+                        });
+
+                        let district_list =
+                            PreferencesJson::value_to_listitem(&self.preferences_json.districts);
+
+                        self.set_district_list_model(liststore_from_vec(&district_list));
+                    }
+                    Err(e) => {
+                        eprintln!("[Error] While getting district list from network: {e:?}");
+                        self.set_toast_message(t!("Network Error"));
+                    }
+                };
+            }
+            CommandMessage::SaveSettings => {
+                // Update prayer times
+                match update_prayer_times_on_network(&mut self.preferences_json).await {
+                    Ok(_) => (),
+                    Err(e) => {
+                        eprintln!("[Error] Failed to upgrade Prayer Times from internet: {e:?}");
+
+                        self.set_toast_message(t!("Network Error"));
+
+                        return;
+                    }
+                }
+
+                // Save latest preferences struct to the .json file
+                match save_preferences_json(&self.preferences_json).await {
+                    Ok(_) => (),
+                    Err(e) => {
+                        eprintln!("[Error] Failed to save preferences.json: {e:?}");
+
+                        self.set_toast_message(t!("Saving settings failed"));
+
+                        return;
+                    }
+                }
+
+                self.set_todays_prayers(prayer::get_prayer_times_with_date(
+                    &self.preferences_json,
+                    0,
+                ));
+                self.set_tomorrows_prayers(prayer::get_prayer_times_with_date(
+                    &self.preferences_json,
+                    1,
+                ));
+                self.set_remaining_time(prayer::calculate_remaining_time(
+                    &self.todays_prayers,
+                    &self.tomorrows_prayers,
+                ));
+                self.set_next_prayer(self.remaining_time.map(|v| v.next_prayer));
+
+                self.set_current_page("main");
+                self.update_preferences_json(|_| {}); // update signal
+
+                self.set_toast_message(t!("Prayer times updated"));
+            }
         }
     }
 }
@@ -577,7 +675,7 @@ fn on_activate(application: &Application) {
 }
 
 fn main() {
-    rust_i18n::set_locale(current_locale::current_locale().unwrap().as_str());
+    rust_i18n::set_locale(USER_LOCALE.as_str());
 
     let preferences_json = match read_preferences_json_file() {
         Ok(p) => p,

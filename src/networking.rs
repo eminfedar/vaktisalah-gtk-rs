@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use crate::{prayer::PrayerTimesWithDate, preferences::PreferencesJson};
+use crate::{prayer::PrayerTimesWithDate, preferences::PreferencesJson, USER_LOCALE};
 
 #[allow(non_snake_case)]
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,7 +22,7 @@ pub struct DistrictResponse {
 async fn get_request(endpoint: &str, id: &str) -> Result<reqwest::Response, reqwest::Error> {
     let url = format!("http://ezanvakti.herokuapp.com/{}/{}", endpoint, id);
 
-    println!("Yapılan istek urlsi: {url:?}");
+    println!("GET request to url: {url:?}");
 
     reqwest::get(url).await
 }
@@ -39,8 +39,15 @@ pub async fn get_city_list(country_id: &str) -> Result<serde_json::Value, reqwes
     let response: Vec<CityResponse> = get_request("sehirler", country_id).await?.json().await?;
 
     let mut json_obj = json!({});
-    for c in response {
-        json_obj[c.SehirAdi] = serde_json::to_value(&c.SehirID).unwrap();
+
+    if USER_LOCALE.as_str() == "tr-TR" {
+        for c in response {
+            json_obj[c.SehirAdi] = serde_json::to_value(&c.SehirID).unwrap();
+        }
+    } else {
+        for c in response {
+            json_obj[c.SehirAdiEn] = serde_json::to_value(&c.SehirID).unwrap();
+        }
     }
 
     Ok(json_obj)
@@ -50,8 +57,15 @@ pub async fn get_district_list(city_id: &str) -> Result<serde_json::Value, reqwe
     let response: Vec<DistrictResponse> = get_request("ilceler", city_id).await?.json().await?;
 
     let mut json_obj = json!({});
-    for d in response {
-        json_obj[d.IlceAdi] = serde_json::to_value(&d.IlceID).unwrap();
+
+    if USER_LOCALE.as_str() == "tr-TR" {
+        for d in response {
+            json_obj[d.IlceAdi] = serde_json::to_value(&d.IlceID).unwrap();
+        }
+    } else {
+        for d in response {
+            json_obj[d.IlceAdiEn] = serde_json::to_value(&d.IlceID).unwrap();
+        }
     }
 
     Ok(json_obj)

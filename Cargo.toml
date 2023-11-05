@@ -1,6 +1,6 @@
 [package]
 name = "vaktisalah-gtk-rs"
-version = "2.0.1"
+version = "2.1.0"
 edition = "2021"
 
 [profile.release]
@@ -17,7 +17,7 @@ relm4 = { version = "0.7.0-beta.2", features = ["libadwaita", "macros", "gnome_4
 tokio = { version = "1", features = ["fs", "time"]}
 
 # HTTP Request
-reqwest = { version = "0.11", default-features = false, features = ["blocking", "json"] }
+reqwest = { version = "0.11.22", default-features = false, features = ["json", "rustls-tls"] }
 
 # Timing
 chrono = "0.4"

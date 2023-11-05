@@ -62,9 +62,21 @@ Warn Min:
   en: Warn Min
   tr-TR: Uyarı Dk
 
-ThisCodeIsOpenLink:
+SourceCodeIsOpen:
   en: This project's source code is open
   tr-TR: Bu projenin kaynak kodları açıktır
+
+GettingCities:
+  en: Getting Cities...
+  tr: Şehirler alınıyor...
+
+GettingDistricts:
+  en: Getting Districts...
+  tr: İlçeler alınıyor...
+
+Updating Prayer Times:
+  en: "Updating Prayer Times..."
+  tr: "Vakitler Güncelleniyor..."
 
 Network Error:
   en: Network Error

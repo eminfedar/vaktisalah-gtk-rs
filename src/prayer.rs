@@ -6,21 +6,17 @@ use rust_i18n::t;
 use serde::{Deserialize, Serialize};
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum Prayer {
+    #[default]
     Fajr = 0,
+
     Sunrise,
     Dhuhr,
     Asr,
     Maghrib,
     Isha,
     FajrNextDay,
-}
-
-impl Default for Prayer {
-    fn default() -> Self {
-        Prayer::Fajr
-    }
 }
 
 impl From<u8> for Prayer {

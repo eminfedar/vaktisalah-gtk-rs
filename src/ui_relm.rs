@@ -241,7 +241,7 @@ impl WidgetTemplate for SettingsPage {
             },
 
             gtk::Label {
-                set_markup: format!("<a href='github.com/eminfedar/vaktisalah-gtk-rs'><small>{}</small></a>", t!("ThisCodeIsOpenLink")).as_str(),
+                set_markup: format!("<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>{}</small></a>", t!("SourceCodeIsOpen")).as_str(),
                 set_valign: gtk::Align::End,
                 set_vexpand: true,
             },

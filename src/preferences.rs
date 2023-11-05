@@ -34,6 +34,7 @@ pub struct Preferences {
 pub struct PreferencesJson {
     pub preferences: Preferences,
     pub countries: serde_json::Value,
+    pub countries_en: Option<serde_json::Value>,
     pub cities: serde_json::Value,
     pub districts: serde_json::Value,
     pub prayer_times: serde_json::Map<String, serde_json::Value>,
