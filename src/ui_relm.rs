@@ -35,7 +35,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
             gtk::Box {
                 #[name = "lbl_fajr"]
                 gtk::Label {
-                    set_label: t!("Fajr").as_str(),
+                    set_label: t!("Fajr").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -50,7 +50,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
             gtk::Box {
                 #[name = "lbl_sunrise"]
                 gtk::Label {
-                    set_label: t!("Sunrise").as_str(),
+                    set_label: t!("Sunrise").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -65,7 +65,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
             gtk::Box {
                 #[name = "lbl_dhuhr"]
                 gtk::Label {
-                    set_label: t!("Dhuhr").as_str(),
+                    set_label: t!("Dhuhr").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -81,7 +81,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
                 #[name = "lbl_asr"]
 
                 gtk::Label {
-                    set_label: t!("Asr").as_str(),
+                    set_label: t!("Asr").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -96,7 +96,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
             gtk::Box {
                 #[name = "lbl_maghrib"]
                 gtk::Label {
-                    set_label: t!("Maghrib").as_str(),
+                    set_label: t!("Maghrib").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -111,7 +111,7 @@ impl WidgetTemplate for MainPagePrayerTimes {
             gtk::Box {
                 #[name = "lbl_isha"]
                 gtk::Label {
-                    set_label: t!("Isha").as_str(),
+                    set_label: t!("Isha").as_ref(),
                     set_halign: gtk::Align::Start,
                     set_hexpand: true,
                 },
@@ -147,7 +147,7 @@ impl WidgetTemplate for SettingsPage {
 
                 #[wrap(Some)]
                 set_center_widget = &gtk::Label {
-                  set_label: t!("Settings").as_str(),
+                  set_label: t!("Settings").as_ref(),
                   set_css_classes: &["title-4"],
                 },
 
@@ -172,7 +172,7 @@ impl WidgetTemplate for SettingsPage {
                 gtk::Box {
                   set_spacing: 7,
                   gtk::Label {
-                    set_label: format!("{}:", t!("Country")).as_str(),
+                    set_label: format!("{}:", t!("Country")).as_ref(),
                   },
 
                   #[name = "dd_country"]
@@ -185,7 +185,7 @@ impl WidgetTemplate for SettingsPage {
                 gtk::Box {
                   set_spacing: 7,
                   gtk::Label {
-                    set_label: format!("{}:", t!("City")).as_str(),
+                    set_label: format!("{}:", t!("City")).as_ref(),
                   },
 
                   #[name = "dd_city"]
@@ -198,7 +198,7 @@ impl WidgetTemplate for SettingsPage {
                 gtk::Box {
                   set_spacing: 7,
                   gtk::Label {
-                    set_label: format!("{}:", t!("District")).as_str(),
+                    set_label: format!("{}:", t!("District")).as_ref(),
                   },
 
                   #[name = "dd_district"]
@@ -211,7 +211,7 @@ impl WidgetTemplate for SettingsPage {
                 gtk::Box {
                   set_spacing: 7,
                   gtk::Label {
-                    set_label: format!("{}:", t!("Warn Min")).as_str(),
+                    set_label: format!("{}:", t!("Warn Min")).as_ref(),
                   },
 
                   #[name = "spn_warning_minutes"]
@@ -236,12 +236,12 @@ impl WidgetTemplate for SettingsPage {
 
             #[name = "btn_save"]
             gtk::Button {
-                set_label: t!("Save").as_str(),
+                set_label: t!("Save").as_ref(),
                 set_receives_default: true,
             },
 
             gtk::Label {
-                set_markup: format!("<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>{}</small></a>", t!("SourceCodeIsOpen")).as_str(),
+                set_markup: format!("<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>{}</small></a>", t!("SourceCodeIsOpen")).as_ref(),
                 set_valign: gtk::Align::End,
                 set_vexpand: true,
             },
@@ -263,12 +263,12 @@ impl WidgetTemplate for MainPage {
 
                     #[name = "lbl_district_name"]
                     gtk::Label {
-                        set_label: t!("District").as_str(),
+                        set_label: t!("District").as_ref(),
                         set_css_classes: &["title-2"],
                     },
                     #[name = "lbl_city_name"]
                     gtk::Label {
-                        set_label: t!("City").as_str(),
+                        set_label: t!("City").as_ref(),
                         set_css_classes: &["dim-label"],
                     },
                 },
@@ -290,7 +290,7 @@ impl WidgetTemplate for MainPage {
                 set_margin_top: 11,
 
                 gtk::Label {
-                  set_label: t!("Gregorian").as_str(),
+                  set_label: t!("Gregorian").as_ref(),
                   set_hexpand: true,
                   set_halign: gtk::Align::Start,
                 },
@@ -302,7 +302,7 @@ impl WidgetTemplate for MainPage {
             },
             gtk::Box {
                 gtk::Label {
-                  set_label: t!("Hijri").as_str(),
+                  set_label: t!("Hijri").as_ref(),
                   set_css_classes: &["success"],
                   set_hexpand: true,
                   set_halign: gtk::Align::Start,
