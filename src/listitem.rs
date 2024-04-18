@@ -1,10 +1,10 @@
 use std::cell::Cell;
 
-use glib::once_cell::sync::Lazy;
 use glib::{ParamSpec, ParamSpecString, Value};
 use gtk::glib;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
+use once_cell::sync::Lazy;
 use relm4::gtk;
 
 use crate::ListItemIDNameGtk;
