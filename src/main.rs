@@ -1,6 +1,7 @@
 use std::time::Duration;
 
 use once_cell::sync::Lazy;
+use relm4::Sender;
 use rust_i18n::i18n;
 use rust_i18n::t;
 i18n!("locales", fallback = "en");
@@ -17,13 +18,16 @@ use relm4::component::{AsyncComponent, AsyncComponentParts};
 use relm4::tokio;
 use relm4::AsyncComponentSender;
 use relm4::{adw, gtk, gtk::gio, gtk::glib, RelmApp};
+use trayicon::MyTray;
 
 // Crate
+mod current_locale;
 mod listitem;
 mod networking;
 mod prayer;
 mod preferences;
 mod sound;
+mod trayicon;
 mod ui_relm;
 
 use crate::listitem::ListItemIDName;
@@ -34,8 +38,7 @@ use crate::sound::*;
 use crate::ui_relm::*;
 
 const CURRENT_TIME_LABEL_STYLE: &[&str] = &["success", "bold", "title-4"];
-static USER_LOCALE: Lazy<String> =
-    Lazy::new(|| current_locale::current_locale().unwrap_or_else(|_| String::from("en-US")));
+static USER_LOCALE: Lazy<String> = Lazy::new(current_locale::current_locale);
 
 glib::wrapper! {
     pub struct ListItemIDNameGtk(ObjectSubclass<ListItemIDName>);
@@ -83,6 +86,10 @@ enum CommandMessage {
     GetCityList(String, String),
     GetDistrictList(String, String),
     SaveSettings,
+
+    TrayIconListenFinished,
+    Show,
+    Exit,
 }
 
 #[derive(Debug)]
@@ -427,6 +434,24 @@ impl AsyncComponent for App {
         // Start second tick
         sender.oneshot_command(async { CommandMessage::SecondTick });
 
+        // Start Tray Icon
+        let command_sender: Sender<CommandMessage> = sender.command_sender().clone();
+        sender.spawn_oneshot_command(move || {
+            let tray_icon_service = ksni::TrayService::new(MyTray {
+                sender: command_sender,
+                on_exit_clicked: Box::new(|s| {
+                    s.send(CommandMessage::Exit).unwrap_or(());
+                }),
+                on_show_clicked: Box::new(|s| {
+                    s.send(CommandMessage::Show).unwrap_or(());
+                }),
+            });
+
+            tray_icon_service.run().unwrap();
+
+            CommandMessage::TrayIconListenFinished
+        });
+
         AsyncComponentParts { model, widgets }
     }
 
@@ -456,8 +481,6 @@ impl AsyncComponent for App {
                         eprintln!("[Error] Failed to save preferences.json: {e:?}");
 
                         self.set_toast_message(t!("Saving settings failed"));
-
-                        return;
                     }
                 }
             }
@@ -663,6 +686,22 @@ impl AsyncComponent for App {
                 self.update_preferences_json(|_| {}); // update signal
 
                 self.set_toast_message(t!("Prayer times updated"));
+            }
+
+            CommandMessage::TrayIconListenFinished => {
+                println!("Tray Icon Listening Finished");
+            }
+
+            CommandMessage::Exit => {
+                let app = root.application().unwrap();
+
+                app.quit();
+            }
+
+            CommandMessage::Show => {
+                let app = root.application().unwrap();
+
+                app.activate();
             }
         }
     }
