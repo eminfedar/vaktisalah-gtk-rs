@@ -4,7 +4,7 @@
   
   <name>Vakt-i Salah</name>
   <developer_name>Emin Fedar</developer_name>
-  <summary>Rus &apos; GTK4 version of Vakt-i Salah (Prayer Times)</summary>
+  <summary>Rust &apos; GTK4 version of Vakt-i Salah (Prayer Times)</summary>
   <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk-rs</url>
   
   <metadata_license>CC0-1.0</metadata_license>
@@ -15,34 +15,28 @@
       Rust and GTK4 Based Prayer Times application. It uses Türkiye&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs)&apos;s prayer times
     </p>
   </description>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#00a865</color>
+    <color type="primary" scheme_preference="dark">#00a865</color>
+  </branding>
   
   <launchable type="desktop-id">io.github.eminfedar.vaktisalah-gtk-rs.desktop</launchable>
   <screenshots>
 
     <screenshot type="default">
-      <caption>Main Window - Light Theme</caption>
-      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_light.png</image>
+      <caption>Main Window</caption>
+      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_window.png</image>
     </screenshot>
-
     <screenshot>
-      <caption>Main Window - Dark Theme</caption>
-      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_dark.png</image>
-    </screenshot>
-
-    <screenshot>
-      <caption>Settings Window - Light Theme</caption>
-      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_light.png</image>
-    </screenshot>
-
-    <screenshot>
-      <caption>Settings Window - Dark Theme</caption>
-      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_dark.png</image>
+      <caption>Settings Window</caption>
+      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_window.png</image>
     </screenshot>
 
   </screenshots>
   
   <releases>
-    <release version="2.3.0" date="2024-04-26"></release>
+    <release version="2.3.0" date="2024-04-29"></release>
     <release version="2.1.0" date="2023-11-05"></release>
     <release version="2.0.1" date="2023-10-16"></release>
     <release version="2.0.0" date="2023-09-14"></release>
