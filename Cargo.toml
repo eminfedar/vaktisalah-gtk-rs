@@ -38,4 +38,4 @@ rust-i18n = { version= "3", default-features = false }
 tracker = "0.2"
 
 # Tray Icon
-ksni = "0.2"
+ksni = "0.2.2"

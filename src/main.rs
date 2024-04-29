@@ -447,7 +447,10 @@ impl AsyncComponent for App {
                 }),
             });
 
-            tray_icon_service.run().unwrap();
+            match tray_icon_service.run_without_dbus_name() {
+                Ok(_) => (),
+                Err(e) => eprintln!("Tray Icon failed: {e:#?}"),
+            }
 
             CommandMessage::TrayIconListenFinished
         });
@@ -688,9 +691,7 @@ impl AsyncComponent for App {
                 self.set_toast_message(t!("Prayer times updated"));
             }
 
-            CommandMessage::TrayIconListenFinished => {
-                println!("Tray Icon Listening Finished");
-            }
+            CommandMessage::TrayIconListenFinished => (),
 
             CommandMessage::Exit => {
                 let app = root.application().unwrap();
