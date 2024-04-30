@@ -4,7 +4,7 @@
   
   <name>Vakt-i Salah</name>
   <developer_name>Emin Fedar</developer_name>
-  <summary>Rust &apos; GTK4 version of Vakt-i Salah (Prayer Times)</summary>
+  <summary>Simple prayer times app</summary>
   <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk-rs</url>
   
   <metadata_license>CC0-1.0</metadata_license>
@@ -12,7 +12,9 @@
   
   <description>
     <p>
-      Rust and GTK4 Based Prayer Times application. It uses Türkiye&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs)&apos;s prayer times
+      Simple prayer/adhan times app.
+      
+      Prayer times are getting fetched every month from Türkiye&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs).
     </p>
   </description>
 
@@ -36,6 +38,7 @@
   </screenshots>
   
   <releases>
+    <release version="2.3.1" date="2024-04-30"></release>
     <release version="2.3.0" date="2024-04-29"></release>
     <release version="2.1.0" date="2023-11-05"></release>
     <release version="2.0.1" date="2023-10-16"></release>
