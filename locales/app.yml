@@ -97,3 +97,11 @@ Prayer times updated:
 Prayer times left:
   en: "%{minutes} minutes left %{prayer}"
   tr-TR: "%{prayer} %{minutes} dakika kaldı!"
+
+Show:
+  en: Show
+  tr-TR: Göster
+
+Exit:
+  en: Exit
+  tr-TR: Çıkış

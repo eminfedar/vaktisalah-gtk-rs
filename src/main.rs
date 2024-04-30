@@ -702,15 +702,27 @@ impl AsyncComponent for App {
             CommandMessage::Show => {
                 let app = root.application().unwrap();
 
-                app.activate();
+                let window_list = app.windows();
+                let window = window_list.first().unwrap();
+
+                println!("Window list len: {}", window_list.len());
+
+                if window.is_visible() {
+                    window.close();
+                } else {
+                    app.activate();
+                }
             }
         }
     }
 }
 
 fn on_activate(application: &Application) {
-    if application.windows().len() == 1 {
-        application.windows().first().as_ref().unwrap().present();
+    let window_list = application.windows();
+    let first_window = window_list.first().unwrap();
+
+    if window_list.len() == 1 {
+        first_window.present();
     }
 }
 
