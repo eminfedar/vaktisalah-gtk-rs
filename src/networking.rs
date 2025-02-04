@@ -20,7 +20,7 @@ pub struct DistrictResponse {
 
 /// Basic HTTP Request
 async fn get_request(endpoint: &str, id: &str) -> Result<reqwest::Response, reqwest::Error> {
-    let url = format!("http://ezanvakti.herokuapp.com/{}/{}", endpoint, id);
+    let url = format!("http://ezanvakti.emushaf.net/{}/{}", endpoint, id);
 
     println!("GET request to url: {url:?}");
 
