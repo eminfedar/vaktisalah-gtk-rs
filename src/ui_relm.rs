@@ -352,7 +352,7 @@ impl WidgetTemplate for MainWindow {
                 #[wrap(Some)]
                 set_title_widget = &adw::WindowTitle {
                     set_title: "Vakt-i Salah",
-                }
+                },
             },
 
             #[name = "toast_overlay"]

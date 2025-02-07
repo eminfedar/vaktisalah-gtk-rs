@@ -1,7 +1,6 @@
 use std::time::Duration;
 
 use once_cell::sync::Lazy;
-use relm4::Sender;
 use rust_i18n::i18n;
 use rust_i18n::t;
 i18n!("locales", fallback = "en");
@@ -14,6 +13,7 @@ use gtk::prelude::{ButtonExt, GtkApplicationExt, GtkWindowExt, WidgetExt};
 use gtk::subclass::prelude::*;
 use gtk::PropertyExpression;
 
+use ksni::TrayMethods;
 use relm4::component::{AsyncComponent, AsyncComponentParts};
 use relm4::tokio;
 use relm4::AsyncComponentSender;
@@ -87,7 +87,6 @@ enum CommandMessage {
     GetDistrictList(String, String),
     SaveSettings,
 
-    TrayIconListenFinished,
     Show,
     Exit,
 }
@@ -435,25 +434,14 @@ impl AsyncComponent for App {
         sender.oneshot_command(async { CommandMessage::SecondTick });
 
         // Start Tray Icon
-        let command_sender: Sender<CommandMessage> = sender.command_sender().clone();
-        sender.spawn_oneshot_command(move || {
-            let tray_icon_service = ksni::TrayService::new(MyTray {
-                sender: command_sender,
-                on_exit_clicked: Box::new(|s| {
-                    s.send(CommandMessage::Exit).unwrap_or(());
-                }),
-                on_show_clicked: Box::new(|s| {
-                    s.send(CommandMessage::Show).unwrap_or(());
-                }),
-            });
+        let tray_icon_service = MyTray {
+            sender: sender.command_sender().clone(),
+        };
 
-            match tray_icon_service.run_without_dbus_name() {
-                Ok(_) => (),
-                Err(e) => eprintln!("Tray Icon failed: {e:#?}"),
-            }
-
-            CommandMessage::TrayIconListenFinished
-        });
+        match tray_icon_service.spawn_without_dbus_name().await {
+            Ok(_) => (),
+            Err(e) => eprintln!("Tray Icon failed: {e:#?}"),
+        }
 
         AsyncComponentParts { model, widgets }
     }
@@ -690,8 +678,6 @@ impl AsyncComponent for App {
 
                 self.set_toast_message(t!("Prayer times updated"));
             }
-
-            CommandMessage::TrayIconListenFinished => (),
 
             CommandMessage::Exit => {
                 let app = root.application().unwrap();

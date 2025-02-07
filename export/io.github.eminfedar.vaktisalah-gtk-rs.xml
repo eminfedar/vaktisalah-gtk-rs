@@ -15,6 +15,9 @@
       Simple prayer/adhan times app.
       
       Prayer times are getting fetched every month from Türkiye&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs).
+
+      Network Permission: Fetching prayer times from internet.
+      Microphone/Audio Permission: Play notification sound when X minutes left. No microphone access. 
     </p>
   </description>
 
@@ -38,6 +41,7 @@
   </screenshots>
   
   <releases>
+    <release version="2.3.2" date="2025-02-07"></release>
     <release version="2.3.1" date="2024-04-30"></release>
     <release version="2.3.0" date="2024-04-29"></release>
     <release version="2.1.0" date="2023-11-05"></release>
