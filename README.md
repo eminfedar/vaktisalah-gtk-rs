@@ -1,5 +1,5 @@
 # vaktisalah-gtk-rs
-Rust &amp; Relm4(GTK4) version of Vakt-i Salah (Prayer Times) Application
+Rust &amp; GTK4 version of Vakt-i Salah (Prayer Times) Application
 
 It uses Türkiye's Diyanet İşleri Başkanlığı (Presidency of Religious Affairs)'s prayer times: [namazvakitleri.diyanet.gov.tr](https://namazvakitleri.diyanet.gov.tr/en-US/)
 
