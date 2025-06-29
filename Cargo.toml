@@ -31,7 +31,7 @@ reqwest = { version = "0.12", default-features = false, features = [
 ] }
 
 # Timing
-chrono = "0.4"
+chrono = { version = "0.4", features = ["unstable-locales"] }
 
 # JSON Parsing
 serde = { version = "1", features = ["derive"] }

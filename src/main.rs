@@ -1,8 +1,7 @@
 use std::sync::LazyLock;
 
-use gettextrs::{
-    self, bind_textdomain_codeset, bindtextdomain, getters::domain_directory, textdomain,
-};
+use chrono::Locale;
+use gettextrs::{self, bind_textdomain_codeset, bindtextdomain, textdomain};
 
 use adw::prelude::*;
 use async_channel::{Receiver, Sender};
@@ -24,12 +23,8 @@ mod window;
 use window::MainWindow;
 
 const APP_ID: &str = "io.github.eminfedar.vaktisalah-gtk-rs";
-
-#[derive(Debug)]
-pub enum TrayMessage {
-    Activate,
-    Exit,
-}
+const LOCALIZATION_DOMAIN_NAME: &str = "vaktisalah-gtk-rs";
+const LOCALIZATION_PATH: &str = "/app/share/locale";
 
 static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
     println!("Runtime initialized");
@@ -40,18 +35,24 @@ static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
         .unwrap()
 });
 
+static LOCALE: LazyLock<Locale> = LazyLock::new(|| {
+    let locale_text = current_locale::current_locale(); // en-US
+
+    match locale_text.as_str() {
+        "tr-TR" => Locale::tr_TR,
+        "en-US" => Locale::en_US,
+        _ => Locale::en_US,
+    }
+});
+
+#[derive(Debug)]
+pub enum TrayMessage {
+    Activate,
+    Exit,
+}
+
 fn main() -> glib::ExitCode {
-    println!(
-        "default gettext domain path: {:?}",
-        domain_directory("vaktisalah-gtk-rs")
-    );
-    textdomain("vaktisalah-gtk-rs").unwrap();
-    bind_textdomain_codeset("vaktisalah-gtk-rs", "UTF-8").unwrap();
-    bindtextdomain("vaktisalah-gtk-rs", "/app/share/locale").unwrap();
-    println!(
-        "new gettext domain path: {:?}",
-        domain_directory("vaktisalah-gtk-rs")
-    );
+    setup_localization();
 
     // Create a new application
     let app = adw::Application::builder().application_id(APP_ID).build();
@@ -67,6 +68,14 @@ fn main() -> glib::ExitCode {
 
     // Run the application
     app.run()
+}
+
+fn setup_localization() {
+    textdomain(LOCALIZATION_DOMAIN_NAME).unwrap();
+    bindtextdomain(LOCALIZATION_DOMAIN_NAME, LOCALIZATION_PATH).unwrap();
+    bind_textdomain_codeset(LOCALIZATION_DOMAIN_NAME, "UTF-8").unwrap();
+
+    println!("Current locale: {}", *LOCALE);
 }
 
 fn load_css() {

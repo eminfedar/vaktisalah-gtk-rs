@@ -28,6 +28,7 @@ use crate::networking;
 use crate::prayer;
 
 use crate::sound::play_alert;
+use crate::LOCALE;
 use crate::RUNTIME;
 
 glib::wrapper! {
@@ -96,7 +97,9 @@ impl MainWindow {
                 self.set_time_maghrib(today.Aksam);
                 self.set_time_isha(today.Yatsi);
 
-                let gregorian_date = Local::now().format("%d %B %Y").to_string();
+                let gregorian_date = Local::now()
+                    .format_localized("%d %B %Y", *LOCALE)
+                    .to_string();
                 let hijri_date = today.HicriTarihUzun;
                 self.set_gregorian_date(gregorian_date);
                 self.set_hijri_date(hijri_date);
@@ -287,8 +290,10 @@ impl MainWindow {
                                         self_clone.set_time_maghrib(today.Aksam);
                                         self_clone.set_time_isha(today.Yatsi);
 
-                                        let gregorian_date =
-                                            Local::now().format("%d %B %Y").to_string();
+                                        let gregorian_date = Local::now()
+                                            .format_localized("%d %B %Y", *LOCALE)
+                                            .to_string();
+
                                         let hijri_date = today.HicriTarihUzun;
                                         self_clone.set_gregorian_date(gregorian_date);
                                         self_clone.set_hijri_date(hijri_date);
