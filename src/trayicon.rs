@@ -23,7 +23,7 @@ impl ksni::Tray for MyTray {
     }
     // NOTE: On some system trays, `id` is a required property to avoid unexpected behaviors
     fn id(&self) -> String {
-        env!("CARGO_PKG_NAME").into()
+        "io.github.eminfedar.vaktisalah-gtk-rs".into()
     }
 
     fn activate(&mut self, _x: i32, _y: i32) {
