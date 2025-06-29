@@ -8,6 +8,7 @@ use adw::ComboRow;
 use adw::SpinRow;
 use async_channel::Receiver;
 use chrono::Local;
+use chrono::Locale;
 use gtk::gio;
 use gtk::gio::prelude::ApplicationExt;
 use gtk::gio::Notification;
@@ -38,11 +39,17 @@ glib::wrapper! {
                     gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
-fn fill_model(selected_name: &str, name_id_list: &HashMap<String, String>) -> (StringList, i32) {
+fn fill_model(
+    selected_name: Option<String>,
+    name_id_list: &HashMap<String, String>,
+) -> (StringList, i32) {
     let mut keys: Vec<&str> = name_id_list.keys().map(|key| key.as_str()).collect();
 
     keys.sort();
-    let selected_index = keys.binary_search(&selected_name).unwrap_or(0) as i32;
+    let selected_index = match selected_name {
+        Some(name) => keys.binary_search(&name.as_str()).unwrap_or(0) as i32,
+        None => 0,
+    };
     let string_list = StringList::new(&keys);
 
     (string_list, selected_index)
@@ -67,9 +74,20 @@ impl MainWindow {
         let imp = self.imp();
         let pref = imp.preferences.borrow();
 
-        self.update_model_country();
-        self.update_model_city();
-        self.update_model_district();
+        println!("{:?}", pref.preferences);
+
+        self.update_model_country(
+            pref.countries.borrow().clone(),
+            pref.countries_en.borrow().clone(),
+            Some(pref.preferences.country.borrow().clone()),
+        );
+        self.update_model_city(
+            pref.cities.borrow().clone(),
+            Some(pref.preferences.city.borrow().clone()),
+        );
+        let district = pref.preferences.district.borrow();
+        self.update_model_district(pref.districts.borrow().clone(), Some(district.clone()));
+        self.set_district_title(district.clone());
 
         // Warn Min
         let warn_min = *pref.preferences.warning_minutes.borrow();
@@ -108,36 +126,59 @@ impl MainWindow {
         imp.tomorrows_prayers.replace(tomorrows_prayers);
     }
 
-    fn update_model_country(&self) {
-        let pref = self.imp().preferences.borrow();
+    fn update_model_country(
+        &self,
+        countries: HashMap<String, String>,
+        countries_en: HashMap<String, String>,
+        selected_country: Option<String>,
+    ) {
+        let imp = self.imp();
+        imp.countries.replace(countries.clone());
+        imp.countries_en.replace(countries_en.clone());
+        if let Some(c) = selected_country.clone() {
+            imp.country.replace(c);
+        }
 
-        // Country
-        let country = pref.preferences.country.borrow().clone();
-        let (list, selected_index) = fill_model(&country, &pref.countries.borrow());
+        let (list, selected_index) = if *LOCALE == Locale::tr_TR {
+            fill_model(selected_country.clone(), &countries)
+        } else {
+            fill_model(selected_country.clone(), &countries_en)
+        };
+
         self.set_model_country(list);
         self.set_selected_country_index(selected_index);
     }
 
-    fn update_model_city(&self) {
-        let pref = self.imp().preferences.borrow();
+    fn update_model_city(&self, cities: HashMap<String, String>, selected_city: Option<String>) {
+        let imp = self.imp();
+        imp.cities.replace(cities.clone());
+        if let Some(c) = selected_city.clone() {
+            imp.city.replace(c);
+        }
 
         // City
-        let city = pref.preferences.city.borrow().clone();
-        let (list, selected_index) = fill_model(&city, &pref.cities.borrow());
+        let (list, selected_index) = fill_model(selected_city.clone(), &cities);
+
         self.set_model_city(list);
         self.set_selected_city_index(selected_index);
-        self.set_city(city);
     }
 
-    fn update_model_district(&self) {
-        let pref = self.imp().preferences.borrow();
+    fn update_model_district(
+        &self,
+        districts: HashMap<String, String>,
+        selected_district: Option<String>,
+    ) {
+        let imp = self.imp();
+        imp.districts.replace(districts.clone());
+        if let Some(c) = selected_district.clone() {
+            imp.district.replace(c);
+        }
 
         // District
-        let district = pref.preferences.district.borrow().clone();
-        let (list, selected_index) = fill_model(&district, &pref.districts.borrow());
+        let (list, selected_index) = fill_model(selected_district.clone(), &districts);
+
         self.set_model_district(list);
         self.set_selected_district_index(selected_index);
-        self.set_district(district);
     }
 
     pub fn init_second_tick(&self) {
@@ -225,10 +266,7 @@ impl MainWindow {
     pub fn listen_channel_message(&self, receiver: Receiver<Message>) {
         let imp = self.imp().downgrade();
         let self_clone = self.downgrade();
-        // let pref = imp.preferences.borrow();
 
-        // let pref_clone = pref.clone();
-        //let self_clone = self.clone();
         glib::spawn_future_local(async move {
             let imp = imp.upgrade().unwrap();
             let self_clone = self_clone.upgrade().unwrap();
@@ -236,25 +274,17 @@ impl MainWindow {
             loop {
                 match receiver.recv().await {
                     Ok(m) => match m {
-                        Message::CityListArrived(result, country) => match result {
+                        Message::CityListArrived(result, _country) => match result {
                             Ok(r) => {
-                                let pref = imp.preferences.borrow();
                                 println!("New City List Arrived: {r:?}");
-                                pref.cities.replace(r);
-                                pref.preferences.country.replace(country);
-                                pref.save().unwrap();
-                                self_clone.update_model_city();
+                                self_clone.update_model_city(r, None);
                             }
                             Err(e) => eprintln!("Failed to fetch cities: {e}"),
                         },
-                        Message::DistrictListArrived(result, city) => match result {
+                        Message::DistrictListArrived(result, _city) => match result {
                             Ok(r) => {
-                                let pref = imp.preferences.borrow();
                                 println!("New District List Arrived: {r:?}");
-                                pref.districts.replace(r);
-                                pref.preferences.city.replace(city);
-                                pref.save().unwrap();
-                                self_clone.update_model_district();
+                                self_clone.update_model_district(r, None);
                             }
                             Err(e) => eprintln!("Failed to fetch districts: {e}"),
                         },
@@ -270,6 +300,22 @@ impl MainWindow {
                                 }
 
                                 // Save latest preferences struct to the .json file
+                                pref.cities.replace(imp.cities.borrow().clone());
+                                pref.districts.replace(imp.districts.borrow().clone());
+
+                                pref.preferences
+                                    .country
+                                    .replace(imp.country.borrow().clone());
+                                pref.preferences.city.replace(imp.city.borrow().clone());
+
+                                let district = imp.district.borrow().clone();
+                                let district_id =
+                                    imp.districts.borrow().get(&district).unwrap().clone();
+
+                                self_clone.set_district_title(district.clone());
+                                pref.preferences.district.replace(district);
+                                pref.preferences.district_id.replace(district_id);
+
                                 pref.prayer_times.replace(hm);
                                 pref.save().unwrap();
 
@@ -340,25 +386,24 @@ impl MainWindow {
         if index == -1 {
             return;
         }
-
-        let imp = self.imp();
-        let pref = imp.preferences.borrow();
-
         let value_obj: StringObject = row.property(param.name());
         let value: String = value_obj.string().to_string();
 
-        if value == *pref.preferences.country.borrow() {
+        let imp = self.imp();
+        if value == *imp.country.borrow() {
             return;
         }
 
-        let country_id = match pref.countries.borrow().get(&value) {
+        let country_id = match imp.countries.borrow().get(&value) {
             Some(v) => v.clone(),
             None => {
-                let b = pref.countries_en.borrow();
+                let b = imp.countries_en.borrow();
                 b.get(&value).unwrap().clone()
             }
         };
         let country_name_clone = value.clone();
+
+        imp.country.replace(value);
 
         let sender = imp.sender.borrow().clone().unwrap();
 
@@ -377,7 +422,7 @@ impl MainWindow {
                 .unwrap();
         });
 
-        println!("country changed: {}", value);
+        println!("country changed: {}", imp.country.borrow());
     }
 
     #[template_callback]
@@ -388,21 +433,20 @@ impl MainWindow {
             return;
         }
 
-        let imp = self.imp();
-        let pref = imp.preferences.borrow();
-
         let value_obj: StringObject = row.property(param.name());
         let value: String = value_obj.string().to_string();
 
-        if value == *pref.preferences.city.borrow() {
+        let imp = self.imp();
+        if value == *imp.city.borrow() {
             return;
         }
 
-        let city_id = match pref.cities.borrow().get(&value) {
+        let city_id = match imp.cities.borrow().get(&value) {
             Some(v) => v.clone(),
             None => String::new(),
         };
         let city_name_clone = value.clone();
+        imp.city.replace(value);
 
         let sender = imp.sender.borrow().clone().unwrap().clone();
 
@@ -421,7 +465,7 @@ impl MainWindow {
                 .unwrap();
         });
 
-        println!("city changed: {}", value);
+        println!("city changed: {}", imp.city.borrow());
     }
 
     #[template_callback]
@@ -432,23 +476,17 @@ impl MainWindow {
             return;
         }
 
-        let imp = self.imp();
-        let pref = imp.preferences.borrow();
-
         let value_obj: StringObject = row.property(param.name());
         let value: String = value_obj.string().to_string();
 
-        if value == *pref.preferences.district.borrow() {
+        let imp = self.imp();
+        if value == *imp.district.borrow() {
             return;
         }
 
-        let district_id = pref.districts.borrow().get(&value).unwrap().clone();
+        imp.district.replace(value);
 
-        pref.preferences.district.replace(value);
-        pref.preferences.district_id.replace(district_id);
-        pref.save().unwrap();
-
-        println!("district changed: {}", pref.preferences.district.borrow());
+        println!("district changed: {}", imp.district.borrow());
     }
 
     #[template_callback]
@@ -465,9 +503,9 @@ impl MainWindow {
     #[template_callback]
     fn on_update_prayer_times_activated(&self, _button: ButtonRow) {
         let imp = self.imp();
-        let pref = imp.preferences.borrow();
 
-        let district_id = pref.preferences.district_id.borrow().clone();
+        let district = imp.district.borrow().clone();
+        let district_id = imp.districts.borrow().get(&district).unwrap().clone();
 
         let sender = imp.sender.borrow().clone().unwrap();
 

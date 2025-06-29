@@ -5,9 +5,8 @@ template $MainWindow: Adw.ApplicationWindow {
   width-request: 280;
   default-height: 453;
   hide-on-close: true;
-  // City Info
-  city: "";
-  district: "";
+  // District Info
+  district-title: "";
   // Date
   gregorian-date: "-";
   hijri-date: "-";
@@ -65,7 +64,7 @@ template $MainWindow: Adw.ApplicationWindow {
                 "title-2",
               ]
 
-              label: bind template.city;
+              label: bind template.district-title;
             }
 
             Box {

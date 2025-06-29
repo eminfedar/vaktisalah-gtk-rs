@@ -41,12 +41,6 @@ pub struct MainWindow {
 
     pub sender: RefCell<Option<Sender<Message>>>,
 
-    // City Info
-    #[property(get, set)]
-    pub city: RefCell<String>,
-    #[property(get, set)]
-    pub district: RefCell<String>,
-
     // Date
     #[property(get, set)]
     pub gregorian_date: RefCell<String>,
@@ -87,6 +81,19 @@ pub struct MainWindow {
     pub model_city: RefCell<StringList>,
     #[property(get, set)]
     pub model_district: RefCell<StringList>,
+
+    pub countries: RefCell<HashMap<String, String>>,
+    pub countries_en: RefCell<HashMap<String, String>>,
+    pub cities: RefCell<HashMap<String, String>>,
+    pub districts: RefCell<HashMap<String, String>>,
+
+    pub country: RefCell<String>,
+    pub city: RefCell<String>,
+    pub district: RefCell<String>,
+
+    #[property(get, set)]
+    pub district_title: RefCell<String>,
+
     #[property(get, set)]
     pub selected_country_index: Cell<i32>,
     #[property(get, set)]

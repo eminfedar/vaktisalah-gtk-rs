@@ -77,7 +77,5 @@ pub async fn get_district_list(city_id: &str) -> Result<HashMap<String, String>,
         }
     }
 
-    println!("New district list: {hm:?}");
-
     Ok(hm)
 }
