@@ -93,7 +93,7 @@ fn load_css() {
 
 fn build_ui(app: &adw::Application) {
     // Create new window and present it
-    if app.windows().len() == 0 {
+    if app.windows().is_empty() {
         let window = MainWindow::new(app);
         window.read_preferences();
         window.init_second_tick();

@@ -88,23 +88,20 @@ impl MainWindow {
         let tomorrows_prayers = prayer::get_prayers_of_day(&pref, 1);
 
         // Set labels
-        match todays_prayers.clone() {
-            Some(today) => {
-                self.set_time_fajr(today.Imsak);
-                self.set_time_sunrise(today.Gunes);
-                self.set_time_dhuhr(today.Ogle);
-                self.set_time_asr(today.Ikindi);
-                self.set_time_maghrib(today.Aksam);
-                self.set_time_isha(today.Yatsi);
+        if let Some(today) = todays_prayers.clone() {
+            self.set_time_fajr(today.Imsak);
+            self.set_time_sunrise(today.Gunes);
+            self.set_time_dhuhr(today.Ogle);
+            self.set_time_asr(today.Ikindi);
+            self.set_time_maghrib(today.Aksam);
+            self.set_time_isha(today.Yatsi);
 
-                let gregorian_date = Local::now()
-                    .format_localized("%d %B %Y", *LOCALE)
-                    .to_string();
-                let hijri_date = today.HicriTarihUzun;
-                self.set_gregorian_date(gregorian_date);
-                self.set_hijri_date(hijri_date);
-            }
-            _ => (),
+            let gregorian_date = Local::now()
+                .format_localized("%d %B %Y", *LOCALE)
+                .to_string();
+            let hijri_date = today.HicriTarihUzun;
+            self.set_gregorian_date(gregorian_date);
+            self.set_hijri_date(hijri_date);
         }
 
         imp.todays_prayers.replace(todays_prayers);
@@ -281,24 +278,21 @@ impl MainWindow {
                                 let tomorrows_prayers = prayer::get_prayers_of_day(&pref, 1);
 
                                 // Set labels
-                                match todays_prayers.clone() {
-                                    Some(today) => {
-                                        self_clone.set_time_fajr(today.Imsak);
-                                        self_clone.set_time_sunrise(today.Gunes);
-                                        self_clone.set_time_dhuhr(today.Ogle);
-                                        self_clone.set_time_asr(today.Ikindi);
-                                        self_clone.set_time_maghrib(today.Aksam);
-                                        self_clone.set_time_isha(today.Yatsi);
+                                if let Some(today) = todays_prayers.clone() {
+                                    self_clone.set_time_fajr(today.Imsak);
+                                    self_clone.set_time_sunrise(today.Gunes);
+                                    self_clone.set_time_dhuhr(today.Ogle);
+                                    self_clone.set_time_asr(today.Ikindi);
+                                    self_clone.set_time_maghrib(today.Aksam);
+                                    self_clone.set_time_isha(today.Yatsi);
 
-                                        let gregorian_date = Local::now()
-                                            .format_localized("%d %B %Y", *LOCALE)
-                                            .to_string();
+                                    let gregorian_date = Local::now()
+                                        .format_localized("%d %B %Y", *LOCALE)
+                                        .to_string();
 
-                                        let hijri_date = today.HicriTarihUzun;
-                                        self_clone.set_gregorian_date(gregorian_date);
-                                        self_clone.set_hijri_date(hijri_date);
-                                    }
-                                    _ => (),
+                                    let hijri_date = today.HicriTarihUzun;
+                                    self_clone.set_gregorian_date(gregorian_date);
+                                    self_clone.set_hijri_date(hijri_date);
                                 }
 
                                 imp.todays_prayers.replace(todays_prayers);
@@ -369,7 +363,7 @@ impl MainWindow {
         let sender = imp.sender.borrow().clone().unwrap();
 
         let toast = adw::Toast::builder()
-            .title(&gettext("Getting Cities..."))
+            .title(gettext("Getting Cities..."))
             .timeout(1)
             .build();
         imp.toast_overlay.add_toast(toast);
@@ -413,7 +407,7 @@ impl MainWindow {
         let sender = imp.sender.borrow().clone().unwrap().clone();
 
         let toast = adw::Toast::builder()
-            .title(&gettext("Getting Districts..."))
+            .title(gettext("Getting Districts..."))
             .timeout(1)
             .build();
         imp.toast_overlay.add_toast(toast);
@@ -478,7 +472,7 @@ impl MainWindow {
         let sender = imp.sender.borrow().clone().unwrap();
 
         let toast = adw::Toast::builder()
-            .title(&gettext("Getting Prayer Times..."))
+            .title(gettext("Getting Prayer Times..."))
             .timeout(1)
             .build();
         imp.toast_overlay.add_toast(toast);

@@ -40,7 +40,7 @@ impl ksni::Tray for MyTray {
         use ksni::menu::*;
         vec![
             StandardItem {
-                label: gettext("Show").into(),
+                label: gettext("Show"),
                 icon_name: "view-fullscreen-symbolic".into(),
                 activate: Box::new(|this: &mut Self| {
                     println!("Tray::Show");
@@ -55,7 +55,7 @@ impl ksni::Tray for MyTray {
             }
             .into(),
             StandardItem {
-                label: gettext("Exit").into(),
+                label: gettext("Exit"),
                 icon_name: "application-exit-symbolic".into(),
                 activate: Box::new(|this: &mut Self| {
                     println!("Tray::Exit");

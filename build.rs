@@ -1,6 +1,6 @@
 use std::{fs, process::Command};
 
-fn compile_po_files(languages: &String) {
+fn compile_po_files(languages: &str) {
     // Create compiled translations dir:
 
     for i in languages.split_whitespace() {
@@ -22,7 +22,7 @@ fn compile_po_files(languages: &String) {
     }
 }
 
-fn update_po_files(languages: &String) {
+fn update_po_files(languages: &str) {
     for i in languages.split_whitespace() {
         let lang_file = format!("po/{}.po", i);
         if fs::exists(&lang_file).unwrap() {
