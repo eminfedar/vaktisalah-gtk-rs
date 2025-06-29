@@ -1,5 +1,7 @@
 use std::sync::LazyLock;
 
+use gettextrs::{self, bind_textdomain_codeset, textdomain};
+
 use adw::prelude::*;
 use async_channel::{Receiver, Sender};
 use gtk::{gdk, gio, glib};
@@ -37,6 +39,9 @@ static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
 });
 
 fn main() -> glib::ExitCode {
+    textdomain("vaktisalah-gtk-rs").unwrap();
+    bind_textdomain_codeset("vaktisalah-gtk-rs", "UTF-8").unwrap();
+
     // Create a new application
     let app = adw::Application::builder().application_id(APP_ID).build();
 

@@ -15,7 +15,7 @@ use gtk::glib;
 use gtk::glib::object::ObjectExt;
 use gtk::glib::ParamSpec;
 use gtk::prelude::GtkWindowExt;
-use gtk::prelude::WidgetExt;
+
 use gtk::Button;
 use gtk::StringList;
 
@@ -26,6 +26,7 @@ use imp::Message;
 
 use crate::networking;
 use crate::prayer;
+
 use crate::sound::play_alert;
 use crate::RUNTIME;
 
@@ -221,51 +222,6 @@ impl MainWindow {
         }
     }
 
-    /*
-    pub async fn fetch_prayer_times(&self) {
-        println!("Fetching Prayer Times...");
-
-        let win = self.clone();
-        let imp = win.imp();
-
-        // Get prayer times
-        let pref = imp.preferences.borrow().clone();
-
-        let district_id = pref.preferences.district_id.borrow().clone();
-
-        let month_prayer_times = match networking::get_prayer_times(&district_id).await {
-            Ok(times) => times,
-            Err(e) => {
-                eprintln!("[Error] Failed to upgrade Prayer Times from internet: {e:?}");
-
-                return;
-            }
-        };
-
-        // Update prayer times on preferences
-        let mut hm = HashMap::new();
-        for day in month_prayer_times {
-            let key = day.MiladiTarihKisa.clone();
-
-            hm.insert(key, day);
-        }
-
-        // Save latest preferences struct to the .json file
-        pref.prayer_times.replace(hm);
-        pref.save().unwrap();
-
-        // Update models
-        imp.todays_prayers
-            .replace(prayer::get_prayers_of_day(&pref, 0));
-        imp.tomorrows_prayers
-            .replace(prayer::get_prayers_of_day(&pref, 1));
-
-        imp.preferences.replace(pref);
-
-        println!("Prayer Times updated!");
-    }
-    */
-
     pub fn listen_channel_message(&self, receiver: Receiver<Message>) {
         let imp = self.imp().downgrade();
         let self_clone = self.downgrade();
@@ -371,7 +327,7 @@ impl MainWindow {
 
     #[template_callback]
     fn if_style(&self, prayer_number: i32, current_prayer: i32) -> Vec<String> {
-        if prayer_number == current_prayer {
+        if prayer_number == (current_prayer % 6) {
             vec!["success".to_string(), "title-3".to_string()]
         } else {
             Vec::new()
