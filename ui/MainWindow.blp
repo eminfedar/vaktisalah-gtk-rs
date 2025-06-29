@@ -1,0 +1,395 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $MainWindow: Adw.ApplicationWindow {
+  width-request: 280;
+  default-height: 454;
+  hide-on-close: true;
+  // City Info
+  city: "";
+  district: "";
+  // Date
+  gregorian-date: "-";
+  hijri-date: "-";
+  // Times
+  time-fajr: "--:--";
+  time-sunrise: "--:--";
+  time-dhuhr: "--:--";
+  time-asr: "--:--";
+  time-maghrib: "--:--";
+  time-isha: "--:--";
+  // Remaining Time
+  next-prayer-name: "--";
+  next-prayer-time: "--:--:--";
+  // Active prayer time styles
+  current-prayer: 0;
+  // Warning minutes
+  warn-min: 15;
+  // Model selected items
+  selected-country-index: 0;
+  selected-city-index: 0;
+  selected-district-index: 0;
+
+  Adw.ToastOverlay toast_overlay {
+    Adw.NavigationView navigation_view {
+      Adw.NavigationPage main_page {
+        title: "Vakt-i Salah";
+
+        Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            styles [
+              "flat",
+            ]
+
+            decoration-layout: ":minimize,close";
+
+            Button {
+              icon-name: "open-menu-symbolic";
+              action-target: "'page-settings'";
+              action-name: "navigation.push";
+            }
+          }
+
+          Box {
+            margin-start: 14;
+            margin-end: 14;
+            margin-bottom: 14;
+            orientation: vertical;
+            spacing: 7;
+
+            Label {
+              margin-bottom: 5;
+
+              styles [
+                "title-2",
+              ]
+
+              label: bind template.city;
+            }
+
+            Box {
+              spacing: 7;
+
+              Button {
+                styles [
+                  "card",
+                ]
+
+                icon-name: "go-previous";
+                width-request: 42;
+                clicked => $on_btn_prev_date_clicked() swapped;
+                visible: false;
+              }
+
+              ListBox {
+                styles [
+                  "boxed-list",
+                ]
+
+                selection-mode: none;
+
+                Adw.ActionRow {
+                  hexpand: true;
+
+                  child: Box {
+                    orientation: vertical;
+                    valign: center;
+                    halign: center;
+                    margin-top: 5;
+                    margin-bottom: 5;
+
+                    Label {
+                      label: bind template.gregorian-date;
+                    }
+
+                    Label {
+                      styles [
+                        "success",
+                      ]
+
+                      label: bind template.hijri-date;
+                    }
+                  };
+                }
+              }
+
+              Button {
+                styles [
+                  "card",
+                ]
+
+                width-request: 42;
+                icon-name: "go-next";
+                clicked => $on_btn_next_date_clicked() swapped;
+                visible: false;
+              }
+            }
+
+            Box {
+              vexpand: true;
+              hexpand: true;
+              overflow: hidden;
+
+              styles [
+                "card",
+              ]
+
+              ScrolledWindow {
+                hexpand: true;
+
+                ListBox {
+                  show-separators: true;
+
+                  styles [
+                    "small-boxes",
+                  ]
+
+                  vexpand: true;
+                  selection-mode: none;
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Fajr");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(0, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-fajr;
+                    }
+                  }
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Sunrise");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(1, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-sunrise;
+                    }
+                  }
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Dhuhr");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(2, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-dhuhr;
+                    }
+                  }
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Asr");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(3, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-asr;
+                    }
+                  }
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Maghrib");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(4, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-maghrib;
+                    }
+                  }
+
+                  Adw.ActionRow {
+                    [prefix]
+                    Label {
+                      label: _("Isha");
+                    }
+
+                    vexpand: true;
+                    css-classes: bind $if_style(5, template.current-prayer) as <$GStrv>;
+
+                    [suffix]
+                    Label {
+                      label: bind template.time-isha;
+                    }
+                  }
+                }
+              }
+            }
+
+            ListBox {
+              styles [
+                "boxed-list",
+              ]
+
+              selection-mode: none;
+
+              Box {
+                orientation: vertical;
+
+                Label {
+                  margin-top: 9;
+
+                  styles [
+                    "title-3",
+                  ]
+
+                  label: bind template.next-prayer-name;
+                }
+
+                Label {
+                  margin-bottom: 9;
+
+                  styles [
+                    "success",
+                    "title-3",
+                  ]
+
+                  label: bind template.next-prayer-time;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      Adw.NavigationPage {
+        title: "Settings";
+        tag: "page-settings";
+
+        Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar {
+            show-back-button: true;
+            show-end-title-buttons: false;
+          }
+
+          ScrolledWindow {
+            Box {
+              margin-top: 7;
+              margin-start: 14;
+              margin-end: 14;
+              orientation: vertical;
+              spacing: 14;
+
+              ListBox {
+                selection-mode: none;
+
+                styles [
+                  "boxed-list",
+                ]
+
+                Adw.ComboRow {
+                  title: _("Country");
+                  enable-search: true;
+                  search-match-mode: substring;
+                  expression: expr item as <$GtkStringObject>.string;
+                  model: bind template.model-country;
+                  selected: bind template.selected-country-index bidirectional;
+                  notify::selected-item => $on_country_changed() swapped;
+                }
+
+                Adw.ComboRow {
+                  title: _("City");
+                  enable-search: true;
+                  search-match-mode: substring;
+                  expression: expr item as <$GtkStringObject>.string;
+                  model: bind template.model-city;
+                  selected: bind template.selected-city-index bidirectional;
+                  notify::selected-item => $on_city_changed() swapped;
+                }
+
+                Adw.ComboRow {
+                  title: _("District");
+                  enable-search: true;
+                  search-match-mode: substring;
+                  expression: expr item as <$GtkStringObject>.string;
+                  model: bind template.model-district;
+                  selected: bind template.selected-district-index bidirectional;
+                  notify::selected-item => $on_district_changed() swapped;
+                }
+              }
+
+              ListBox {
+                selection-mode: none;
+
+                styles [
+                  "boxed-list",
+                ]
+
+                Adw.SpinRow {
+                  title: _("Warn Min.");
+                  tooltip-text: _("Shows a notification minutes before the next prayer time.");
+                  climb-rate: 1;
+                  value: bind template.warn-min bidirectional;
+                  notify::value => $on_warn_min_changed() swapped;
+
+                  adjustment: Adjustment {
+                    lower: 0;
+                    upper: 120;
+                    step-increment: 1;
+                  };
+                }
+              }
+
+              ListBox {
+                selection-mode: none;
+
+                styles [
+                  "boxed-list",
+                ]
+
+                Adw.ButtonRow {
+                  styles [
+                    "suggested-action",
+                  ]
+
+                  title: _("Update Prayer Times");
+                  start-icon-name: "view-refresh-symbolic";
+                  activated => $on_update_prayer_times_activated() swapped;
+                }
+              }
+
+              Label {
+                use-markup: true;
+                label: _("<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open.</small></a>");
+              }
+
+              Label {
+                styles [
+                  "dim-label",
+                ]
+
+                label: "©2025 Emin Fedar";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

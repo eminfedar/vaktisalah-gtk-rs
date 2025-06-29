@@ -1,8 +1,8 @@
 use std::fmt::Display;
 
 use crate::preferences::PreferencesJson;
-use chrono::{Days, Local, Utc};
-use rust_i18n::t;
+use chrono::{Days, Local};
+use gettextrs::gettext;
 use serde::{Deserialize, Serialize};
 
 #[repr(u8)]
@@ -37,13 +37,13 @@ impl From<u8> for Prayer {
 impl Display for Prayer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let p = match self {
-            Prayer::Fajr => t!("to Fajr"),
-            Prayer::Sunrise => t!("to Sunrise"),
-            Prayer::Dhuhr => t!("to Dhuhr"),
-            Prayer::Asr => t!("to Asr"),
-            Prayer::Maghrib => t!("to Maghrib"),
-            Prayer::Isha => t!("to Isha"),
-            Prayer::FajrNextDay => t!("to Fajr"),
+            Prayer::Fajr => gettext("to Fajr"),
+            Prayer::Sunrise => gettext("to Sunrise"),
+            Prayer::Dhuhr => gettext("to Dhuhr"),
+            Prayer::Asr => gettext("to Asr"),
+            Prayer::Maghrib => gettext("to Maghrib"),
+            Prayer::Isha => gettext("to Isha"),
+            Prayer::FajrNextDay => gettext("to Fajr"),
         };
 
         write!(f, "{}", p)
@@ -73,34 +73,30 @@ pub struct PrayerTimesWithDate {
     pub HicriTarihUzun: String,
 }
 
-pub fn get_prayer_times_with_date(
-    preferences_json: &PreferencesJson,
+pub fn get_prayers_of_day(
+    preferences: &PreferencesJson,
     additional_day: u64,
 ) -> Option<PrayerTimesWithDate> {
-    let date_formatted = Utc::now()
+    let date_formatted = Local::now()
         .checked_add_days(Days::new(additional_day))?
         .format("%d.%m.%Y")
         .to_string();
 
-    serde_json::from_value(
-        preferences_json
-            .prayer_times
-            .get(&date_formatted)?
-            .to_owned(),
-    )
-    .ok()
+    let times = preferences.prayer_times.borrow();
+
+    times.get(&date_formatted).cloned()
 }
 
 pub fn is_prayer_times_valid(preferences: &PreferencesJson) -> bool {
-    let today = Utc::now();
-    let tomorrow = Utc::now().checked_add_days(Days::new(1)).unwrap();
+    let today = Local::now();
+    let tomorrow = Local::now().checked_add_days(Days::new(5)).unwrap();
 
     let today_formatted = today.format("%d.%m.%Y").to_string();
     let tomorrow_formatted = tomorrow.format("%d.%m.%Y").to_string();
 
-    if preferences.prayer_times.get(&today_formatted).is_none()
-        || preferences.prayer_times.get(&tomorrow_formatted).is_none()
-    {
+    let times = preferences.prayer_times.borrow();
+
+    if times.get(&today_formatted).is_none() || times.get(&tomorrow_formatted).is_none() {
         return false;
     }
 

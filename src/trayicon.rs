@@ -1,9 +1,11 @@
-use crate::CommandMessage;
-use relm4::Sender;
-use rust_i18n::t;
+use async_channel::Sender;
+use gettextrs::gettext;
+use gtk::glib;
+
+use crate::TrayMessage;
 
 pub struct MyTray {
-    pub sender: Sender<CommandMessage>,
+    pub sender: Sender<TrayMessage>,
 }
 
 impl std::fmt::Debug for MyTray {
@@ -25,23 +27,45 @@ impl ksni::Tray for MyTray {
     }
 
     fn activate(&mut self, _x: i32, _y: i32) {
-        self.sender.send(CommandMessage::Show).unwrap_or(());
+        println!("Tray icon activated");
+
+        let sender = self.sender.clone();
+
+        glib::spawn_future(async move {
+            sender.send(TrayMessage::Activate).await.unwrap();
+        });
     }
 
     fn menu(&self) -> Vec<ksni::MenuItem<Self>> {
         use ksni::menu::*;
         vec![
             StandardItem {
-                label: t!("Show").into(),
+                label: gettext("Show").into(),
                 icon_name: "view-fullscreen-symbolic".into(),
-                activate: Box::new(|this: &mut Self| this.sender.send(CommandMessage::Show).unwrap_or(())),
+                activate: Box::new(|this: &mut Self| {
+                    println!("Tray::Show");
+
+                    let sender = this.sender.clone();
+
+                    glib::spawn_future(async move {
+                        sender.send(TrayMessage::Activate).await.unwrap();
+                    });
+                }),
                 ..Default::default()
             }
             .into(),
             StandardItem {
-                label: t!("Exit").into(),
+                label: gettext("Exit").into(),
                 icon_name: "application-exit-symbolic".into(),
-                activate: Box::new(|this: &mut Self| this.sender.send(CommandMessage::Exit).unwrap_or(())),
+                activate: Box::new(|this: &mut Self| {
+                    println!("Tray::Exit");
+
+                    let sender = this.sender.clone();
+
+                    glib::spawn_future(async move {
+                        sender.send(TrayMessage::Exit).await.unwrap();
+                    });
+                }),
                 ..Default::default()
             }
             .into(),

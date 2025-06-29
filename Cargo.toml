@@ -2,6 +2,7 @@
 name = "vaktisalah-gtk-rs"
 version = "2.3.2"
 edition = "2021"
+build = "build.rs"
 
 [profile.release]
 strip = true
@@ -12,8 +13,16 @@ lto = true
 
 [dependencies]
 # GTK
-relm4 = { version = "0.8", features = ["libadwaita", "macros", "gnome_46"] }
-tokio = { version = "1", features = ["fs", "time"] }
+gtk = { version = "0.9", package = "gtk4", features = ["v4_16", "blueprint"] }
+adw = { version = "0.7", package = "libadwaita", features = ["v1_6"] }
+
+gettext-rs = { version = "0.7", features = ["gettext-system"] }
+formatx = "*"
+
+tokio = { version = "1", features = ["full"] }
+
+# async channel
+async-channel = "2"
 
 # HTTP Request
 reqwest = { version = "0.12", default-features = false, features = [
@@ -37,8 +46,5 @@ once_cell = "1"
 # Localization
 rust-i18n = { version = "3", default-features = false }
 
-# GTK UI Update
-tracker = "0.2"
-
 # Tray Icon
-ksni = { version = "0.3", default-features = false, features = ["async-io"] }
+ksni = { version = "0.3", features = ["blocking"] }

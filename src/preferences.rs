@@ -1,69 +1,55 @@
-use once_cell::sync::Lazy;
-use std::{io, path::PathBuf};
+use std::{cell::RefCell, collections::HashMap, fs, io};
 
 use serde::{Deserialize, Serialize};
 
-use crate::ListItemIDNameGtk;
-use relm4::tokio;
+use crate::prayer::PrayerTimesWithDate;
 
 // === PREFERENCE LOADING & SAVING ===
 static PREFERENCES_TEMPLATE: &str = include_str!("../data/preferences.json");
 
-static PREFERENCES_JSON_PATH: Lazy<PathBuf> = Lazy::new(|| {
-    let mut preferences_pathbuf = relm4::gtk::glib::user_config_dir();
-    preferences_pathbuf.push("io.github.eminfedar.vaktisalah-gtk-rs/preferences.json");
-
-    if !preferences_pathbuf.exists() {
-        std::fs::create_dir_all(preferences_pathbuf.parent().unwrap()).unwrap();
-        std::fs::write(preferences_pathbuf.as_path(), PREFERENCES_TEMPLATE).unwrap();
-    };
-
-    preferences_pathbuf
-});
-
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Preferences {
-    pub country: String,
-    pub city: String,
-    pub district: String,
-    pub district_id: String,
-    pub warning_minutes: u8,
-    pub dark_mode: Option<bool>,
+    pub country: RefCell<String>,
+    pub city: RefCell<String>,
+    pub district: RefCell<String>,
+    pub district_id: RefCell<String>,
+    pub warning_minutes: RefCell<u8>,
 }
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct PreferencesJson {
     pub preferences: Preferences,
-    pub countries: serde_json::Value,
-    pub countries_en: Option<serde_json::Value>,
-    pub cities: serde_json::Value,
-    pub districts: serde_json::Value,
-    pub prayer_times: serde_json::Map<String, serde_json::Value>,
+    pub countries: RefCell<HashMap<String, String>>,
+    pub countries_en: RefCell<HashMap<String, String>>,
+    pub cities: RefCell<HashMap<String, String>>,
+    pub districts: RefCell<HashMap<String, String>>,
+    pub prayer_times: RefCell<HashMap<String, PrayerTimesWithDate>>,
 }
 
-impl PreferencesJson {
-    pub fn value_to_listitem(key_value_map: &serde_json::Value) -> Vec<ListItemIDNameGtk> {
-        key_value_map
-            .as_object()
-            .unwrap()
-            .iter()
-            .map(|(name, id)| ListItemIDNameGtk::new(id.as_str().unwrap(), name.as_str()))
-            .collect()
+impl Default for PreferencesJson {
+    fn default() -> Self {
+        let mut preferences_pathbuf = gtk::glib::user_config_dir();
+        preferences_pathbuf.push("io.github.eminfedar.vaktisalah-gtk-rs/preferences.json");
+
+        if preferences_pathbuf.exists() {
+            let preferences_str = std::fs::read_to_string(preferences_pathbuf.as_path()).unwrap();
+
+            serde_json::from_str(preferences_str.as_str()).unwrap()
+        } else {
+            std::fs::create_dir_all(preferences_pathbuf.parent().unwrap()).unwrap();
+            std::fs::write(preferences_pathbuf.as_path(), PREFERENCES_TEMPLATE).unwrap();
+
+            serde_json::from_str(PREFERENCES_TEMPLATE).unwrap()
+        }
     }
 }
 
-pub fn read_preferences_json_file() -> io::Result<PreferencesJson> {
-    let preferences_str = std::fs::read_to_string(PREFERENCES_JSON_PATH.as_path())?;
-    let preferences: PreferencesJson = serde_json::from_str(preferences_str.as_str())?;
+impl PreferencesJson {
+    pub fn save(&self) -> io::Result<()> {
+        let mut preferences_pathbuf = gtk::glib::user_config_dir();
+        preferences_pathbuf.push("io.github.eminfedar.vaktisalah-gtk-rs/preferences.json");
 
-    Ok(preferences)
-}
+        fs::write(preferences_pathbuf, serde_json::to_string(self)?)?;
 
-pub async fn save_preferences_json(
-    preferences: &PreferencesJson,
-) -> Result<(), Box<dyn std::error::Error>> {
-    let preferences_str = serde_json::to_string(preferences)?;
-
-    tokio::fs::write(PREFERENCES_JSON_PATH.as_path(), preferences_str.as_str()).await?;
-
-    Ok(())
+        Ok(())
+    }
 }

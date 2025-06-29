@@ -1,0 +1,4 @@
+ui/MainWindow.blp
+src/window/mod.rs
+src/trayicon.rs
+src/prayer.rs

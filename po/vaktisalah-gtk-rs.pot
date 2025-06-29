@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-29 14:47+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ui/MainWindow.blp:154
+msgid "Fajr"
+msgstr ""
+
+#: ui/MainWindow.blp:169
+msgid "Sunrise"
+msgstr ""
+
+#: ui/MainWindow.blp:184
+msgid "Dhuhr"
+msgstr ""
+
+#: ui/MainWindow.blp:199
+msgid "Asr"
+msgstr ""
+
+#: ui/MainWindow.blp:214
+msgid "Maghrib"
+msgstr ""
+
+#: ui/MainWindow.blp:229
+msgid "Isha"
+msgstr ""
+
+#: ui/MainWindow.blp:307
+msgid "Country"
+msgstr ""
+
+#: ui/MainWindow.blp:317
+msgid "City"
+msgstr ""
+
+#: ui/MainWindow.blp:327
+msgid "District"
+msgstr ""
+
+#: ui/MainWindow.blp:345
+msgid "Warn Min."
+msgstr ""
+
+#: ui/MainWindow.blp:346
+msgid "Shows a notification minutes before the next prayer time."
+msgstr ""
+
+#: ui/MainWindow.blp:371
+msgid "Update Prayer Times"
+msgstr ""
+
+#: ui/MainWindow.blp:379
+msgid ""
+"<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This "
+"project's source code is open.</small></a>"
+msgstr ""
+
+#: src/window/mod.rs:203
+#, python-brace-format
+msgid "{min} minutes left {prayer}"
+msgstr ""
+
+#: src/window/mod.rs:350
+msgid "Prayer Times Updated."
+msgstr ""
+
+#: src/window/mod.rs:359
+msgid "Failed to get prayer times!"
+msgstr ""
+
+#: src/window/mod.rs:411
+msgid "Getting Cities..."
+msgstr ""
+
+#: src/window/mod.rs:455
+msgid "Getting Districts..."
+msgstr ""
+
+#: src/window/mod.rs:520
+msgid "Getting Prayer Times..."
+msgstr ""
+
+#: src/trayicon.rs:43
+msgid "Show"
+msgstr ""
+
+#: src/trayicon.rs:58
+msgid "Exit"
+msgstr ""
+
+#: src/prayer.rs:40 src/prayer.rs:46
+msgid "to Fajr"
+msgstr ""
+
+#: src/prayer.rs:41
+msgid "to Sunrise"
+msgstr ""
+
+#: src/prayer.rs:42
+msgid "to Dhuhr"
+msgstr ""
+
+#: src/prayer.rs:43
+msgid "to Asr"
+msgstr ""
+
+#: src/prayer.rs:44
+msgid "to Maghrib"
+msgstr ""
+
+#: src/prayer.rs:45
+msgid "to Isha"
+msgstr ""

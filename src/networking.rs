@@ -1,7 +1,8 @@
-use serde::{Deserialize, Serialize};
-use serde_json::json;
+use std::collections::HashMap;
 
-use crate::{prayer::PrayerTimesWithDate, preferences::PreferencesJson, USER_LOCALE};
+use serde::{Deserialize, Serialize};
+
+use crate::{current_locale, prayer::PrayerTimesWithDate};
 
 #[allow(non_snake_case)]
 #[derive(Debug, Serialize, Deserialize)]
@@ -28,61 +29,55 @@ async fn get_request(endpoint: &str, id: &str) -> Result<reqwest::Response, reqw
 }
 
 /// Get Prayer Times from internet
-async fn get_prayer_times(district_id: &str) -> Result<Vec<PrayerTimesWithDate>, reqwest::Error> {
+pub async fn get_prayer_times(
+    district_id: &str,
+) -> Result<Vec<PrayerTimesWithDate>, reqwest::Error> {
     get_request("vakitler", district_id)
         .await?
         .json::<Vec<PrayerTimesWithDate>>()
         .await
 }
 /// Get City List from internet
-pub async fn get_city_list(country_id: &str) -> Result<serde_json::Value, reqwest::Error> {
+pub async fn get_city_list(country_id: &str) -> Result<HashMap<String, String>, reqwest::Error> {
     let response: Vec<CityResponse> = get_request("sehirler", country_id).await?.json().await?;
 
-    let mut json_obj = json!({});
+    let mut hm = HashMap::new();
 
-    if USER_LOCALE.as_str() == "tr-TR" {
+    let locale = current_locale::current_locale();
+
+    if locale == "tr-TR" {
         for c in response {
-            json_obj[c.SehirAdi] = serde_json::to_value(&c.SehirID).unwrap();
+            hm.insert(c.SehirAdi, c.SehirID);
         }
     } else {
         for c in response {
-            json_obj[c.SehirAdiEn] = serde_json::to_value(&c.SehirID).unwrap();
+            hm.insert(c.SehirAdiEn, c.SehirID);
         }
     }
 
-    Ok(json_obj)
+    println!("New list: {hm:?}");
+
+    Ok(hm)
 }
 /// Get District List from internet
-pub async fn get_district_list(city_id: &str) -> Result<serde_json::Value, reqwest::Error> {
+pub async fn get_district_list(city_id: &str) -> Result<HashMap<String, String>, reqwest::Error> {
     let response: Vec<DistrictResponse> = get_request("ilceler", city_id).await?.json().await?;
 
-    let mut json_obj = json!({});
+    let mut hm = HashMap::new();
 
-    if USER_LOCALE.as_str() == "tr-TR" {
+    let locale = current_locale::current_locale();
+
+    if locale == "tr-TR" {
         for d in response {
-            json_obj[d.IlceAdi] = serde_json::to_value(&d.IlceID).unwrap();
+            hm.insert(d.IlceAdi, d.IlceID);
         }
     } else {
         for d in response {
-            json_obj[d.IlceAdiEn] = serde_json::to_value(&d.IlceID).unwrap();
+            hm.insert(d.IlceAdiEn, d.IlceID);
         }
     }
 
-    Ok(json_obj)
-}
+    println!("New district list: {hm:?}");
 
-pub async fn update_prayer_times_on_network(
-    preferences: &mut PreferencesJson,
-) -> Result<(), Box<dyn std::error::Error>> {
-    let monthly_prayer_times = get_prayer_times(&preferences.preferences.district_id).await?;
-
-    preferences.prayer_times.clear();
-    for day in monthly_prayer_times {
-        let key = day.MiladiTarihKisa.clone();
-        let day_as_value = serde_json::to_value(day)?;
-
-        preferences.prayer_times.insert(key, day_as_value);
-    }
-
-    Ok(())
+    Ok(hm)
 }
