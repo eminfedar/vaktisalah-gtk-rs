@@ -52,10 +52,10 @@
             },
             "build-commands": [
                 "cargo build --release --manifest-path Cargo.toml",
-                "install -Dm755 ./target/release/vaktisalah-gtk-rs -t /app/bin/",
-                "install -Dm755 ./po/output/tr/LC_MESSAGES/vaktisalah-gtk-rs.mo -t /app/share/locale/tr/LC_MESSAGES/vaktisalah-gtk-rs.mo"
+                "install -Dm755 ./target/release/vaktisalah-gtk-rs -t /app/bin/"
             ],
             "post-install": [
+                "install -Dm755 po/output/tr/LC_MESSAGES/vaktisalah-gtk-rs.mo /app/share/locale/tr/LC_MESSAGES/vaktisalah-gtk-rs.mo",
                 "install -Dm644 export/io.github.eminfedar.vaktisalah-gtk-rs.svg /app/share/icons/hicolor/scalable/apps/io.github.eminfedar.vaktisalah-gtk-rs.svg",
                 "install -Dm644 export/io.github.eminfedar.vaktisalah-gtk-rs.png /app/share/icons/hicolor/128x128/apps/io.github.eminfedar.vaktisalah-gtk-rs.png",
                 "install -Dm644 export/io.github.eminfedar.vaktisalah-gtk-rs.desktop /app/share/applications/io.github.eminfedar.vaktisalah-gtk-rs.desktop",

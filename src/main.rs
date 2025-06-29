@@ -1,6 +1,8 @@
 use std::sync::LazyLock;
 
-use gettextrs::{self, bind_textdomain_codeset, textdomain};
+use gettextrs::{
+    self, bind_textdomain_codeset, bindtextdomain, getters::domain_directory, textdomain,
+};
 
 use adw::prelude::*;
 use async_channel::{Receiver, Sender};
@@ -21,7 +23,7 @@ mod window;
 
 use window::MainWindow;
 
-const APP_ID: &str = "io.github.eminfedar.vaktisalah-gtk-rs2";
+const APP_ID: &str = "io.github.eminfedar.vaktisalah-gtk-rs";
 
 #[derive(Debug)]
 pub enum TrayMessage {
@@ -39,8 +41,17 @@ static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
 });
 
 fn main() -> glib::ExitCode {
+    println!(
+        "default gettext domain path: {:?}",
+        domain_directory("vaktisalah-gtk-rs")
+    );
     textdomain("vaktisalah-gtk-rs").unwrap();
     bind_textdomain_codeset("vaktisalah-gtk-rs", "UTF-8").unwrap();
+    bindtextdomain("vaktisalah-gtk-rs", "/app/share/locale").unwrap();
+    println!(
+        "new gettext domain path: {:?}",
+        domain_directory("vaktisalah-gtk-rs")
+    );
 
     // Create a new application
     let app = adw::Application::builder().application_id(APP_ID).build();
