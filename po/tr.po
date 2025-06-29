@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-29 14:47+0300\n"
+"POT-Creation-Date: 2025-06-29 23:11+0300\n"
 "PO-Revision-Date: 2025-04-02 11:15+0300\n"
 "Last-Translator: Emin Fedar <eminfedar@gmail.com>\n"
 "Language-Team: Turkish\n"
@@ -72,28 +72,28 @@ msgstr ""
 "<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>Bu projenin "
 "kaynak kodları açıktır.</small></a>"
 
-#: src/window/mod.rs:203
+#: src/window/mod.rs:204
 #, python-brace-format
 msgid "{min} minutes left {prayer}"
 msgstr "{prayer} {min} dakika kaldı"
 
-#: src/window/mod.rs:350
+#: src/window/mod.rs:306
 msgid "Prayer Times Updated."
 msgstr "Vakitleri Güncellendi."
 
-#: src/window/mod.rs:359
+#: src/window/mod.rs:315
 msgid "Failed to get prayer times!"
 msgstr "Vakitler alınamadı!"
 
-#: src/window/mod.rs:411
+#: src/window/mod.rs:367
 msgid "Getting Cities..."
 msgstr "Şehirler Alınıyor..."
 
-#: src/window/mod.rs:455
+#: src/window/mod.rs:411
 msgid "Getting Districts..."
 msgstr "İlçeler Alınıyor..."
 
-#: src/window/mod.rs:520
+#: src/window/mod.rs:476
 msgid "Getting Prayer Times..."
 msgstr "Vakitler Alınıyor..."
 

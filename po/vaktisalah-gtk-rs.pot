@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-29 14:47+0300\n"
+"POT-Creation-Date: 2025-06-29 23:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,28 +71,28 @@ msgid ""
 "project's source code is open.</small></a>"
 msgstr ""
 
-#: src/window/mod.rs:203
+#: src/window/mod.rs:204
 #, python-brace-format
 msgid "{min} minutes left {prayer}"
 msgstr ""
 
-#: src/window/mod.rs:350
+#: src/window/mod.rs:306
 msgid "Prayer Times Updated."
 msgstr ""
 
-#: src/window/mod.rs:359
+#: src/window/mod.rs:315
 msgid "Failed to get prayer times!"
 msgstr ""
 
-#: src/window/mod.rs:411
+#: src/window/mod.rs:367
 msgid "Getting Cities..."
 msgstr ""
 
-#: src/window/mod.rs:455
+#: src/window/mod.rs:411
 msgid "Getting Districts..."
 msgstr ""
 
-#: src/window/mod.rs:520
+#: src/window/mod.rs:476
 msgid "Getting Prayer Times..."
 msgstr ""
 
