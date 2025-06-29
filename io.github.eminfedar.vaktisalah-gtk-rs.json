@@ -15,8 +15,7 @@
         "--socket=wayland",
         "--device=dri",
         "--talk-name=org.freedesktop.Notifications",
-        "--talk-name=org.kde.StatusNotifierWatcher",
-        "--talk-name=io.github.eminfedar.vaktisalah-gtk-rs"
+        "--talk-name=org.kde.StatusNotifierWatcher"
     ],
     "modules": [
         {
