@@ -27,8 +27,6 @@ impl ksni::Tray for MyTray {
     }
 
     fn activate(&mut self, _x: i32, _y: i32) {
-        println!("Tray icon activated");
-
         let sender = self.sender.clone();
 
         glib::spawn_future(async move {
@@ -43,8 +41,6 @@ impl ksni::Tray for MyTray {
                 label: gettext("Show"),
                 icon_name: "view-fullscreen-symbolic".into(),
                 activate: Box::new(|this: &mut Self| {
-                    println!("Tray::Show");
-
                     let sender = this.sender.clone();
 
                     glib::spawn_future(async move {
@@ -58,8 +54,6 @@ impl ksni::Tray for MyTray {
                 label: gettext("Exit"),
                 icon_name: "application-exit-symbolic".into(),
                 activate: Box::new(|this: &mut Self| {
-                    println!("Tray::Exit");
-
                     let sender = this.sender.clone();
 
                     glib::spawn_future(async move {

@@ -23,7 +23,7 @@ pub struct DistrictResponse {
 async fn get_request(endpoint: &str, id: &str) -> Result<reqwest::Response, reqwest::Error> {
     let url = format!("http://ezanvakti.emushaf.net/{}/{}", endpoint, id);
 
-    println!("GET request to url: {url:?}");
+    println!("GET: {url:?}");
 
     reqwest::get(url).await
 }
@@ -54,8 +54,6 @@ pub async fn get_city_list(country_id: &str) -> Result<HashMap<String, String>, 
             hm.insert(c.SehirAdiEn, c.SehirID);
         }
     }
-
-    println!("New list: {hm:?}");
 
     Ok(hm)
 }

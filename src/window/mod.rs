@@ -74,8 +74,6 @@ impl MainWindow {
         let imp = self.imp();
         let pref = imp.preferences.borrow();
 
-        println!("{:?}", pref.preferences);
-
         self.update_model_country(
             pref.countries.borrow().clone(),
             pref.countries_en.borrow().clone(),
@@ -193,7 +191,6 @@ impl MainWindow {
             let sender = imp.sender.borrow().clone().unwrap();
 
             RUNTIME.spawn(async move {
-                println!("request task spawned!");
                 let result = networking::get_prayer_times(&district_id).await;
                 sender
                     .send(Message::PrayerTimesArrived(result))
@@ -276,14 +273,14 @@ impl MainWindow {
                     Ok(m) => match m {
                         Message::CityListArrived(result, _country) => match result {
                             Ok(r) => {
-                                println!("New City List Arrived: {r:?}");
+                                println!("City List Arrived: {r:?}");
                                 self_clone.update_model_city(r, None);
                             }
                             Err(e) => eprintln!("Failed to fetch cities: {e}"),
                         },
                         Message::DistrictListArrived(result, _city) => match result {
                             Ok(r) => {
-                                println!("New District List Arrived: {r:?}");
+                                println!("District List Arrived: {r:?}");
                                 self_clone.update_model_district(r, None);
                             }
                             Err(e) => eprintln!("Failed to fetch districts: {e}"),
@@ -414,15 +411,12 @@ impl MainWindow {
         imp.toast_overlay.add_toast(toast);
 
         RUNTIME.spawn(async move {
-            println!("request task spawned!");
             let result = networking::get_city_list(&country_id).await;
             sender
                 .send(Message::CityListArrived(result, country_name_clone))
                 .await
                 .unwrap();
         });
-
-        println!("country changed: {}", imp.country.borrow());
     }
 
     #[template_callback]
@@ -457,15 +451,12 @@ impl MainWindow {
         imp.toast_overlay.add_toast(toast);
 
         RUNTIME.spawn(async move {
-            println!("request task spawned!");
             let result = networking::get_district_list(&city_id).await;
             sender
                 .send(Message::DistrictListArrived(result, city_name_clone))
                 .await
                 .unwrap();
         });
-
-        println!("city changed: {}", imp.city.borrow());
     }
 
     #[template_callback]
@@ -485,8 +476,6 @@ impl MainWindow {
         }
 
         imp.district.replace(value);
-
-        println!("district changed: {}", imp.district.borrow());
     }
 
     #[template_callback]
@@ -516,7 +505,6 @@ impl MainWindow {
         imp.toast_overlay.add_toast(toast);
 
         RUNTIME.spawn(async move {
-            println!("request task spawned!");
             let result = networking::get_prayer_times(&district_id).await;
             sender
                 .send(Message::PrayerTimesArrived(result))
@@ -525,19 +513,16 @@ impl MainWindow {
         });
     }
 
+    // TODO: Add this feature later
     #[template_callback]
     fn on_btn_prev_date_clicked(&self, _button: Button) {
         let imp = self.imp();
         imp.visible_day.replace_with(|&mut old| old - 1);
-
-        println!("{}", imp.visible_day.borrow());
     }
 
     #[template_callback]
     fn on_btn_next_date_clicked(&self, _button: Button) {
         let imp = self.imp();
         imp.visible_day.replace_with(|&mut old| old + 1);
-
-        println!("{}", imp.visible_day.borrow());
     }
 }
