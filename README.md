@@ -9,5 +9,7 @@ It uses Türkiye's Diyanet İşleri Başkanlığı (Presidency of Religious Affa
 
 ![main_light](/export/main_window.png) ![settings_light](/export/settings_window.png)
 
+![main_dark](/export/main_window_dark.png) ![settings_dark](/export/settings_window_dark.png)
+
 ### Flathub repository:
 Here is the flathub manifest file and cargo-sources.json: https://github.com/flathub/io.github.eminfedar.vaktisalah-gtk-rs
