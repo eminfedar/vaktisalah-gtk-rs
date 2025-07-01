@@ -16,6 +16,7 @@ mod current_locale;
 mod networking;
 mod prayer;
 mod preferences;
+mod rowprayertime;
 mod sound;
 mod trayicon;
 mod window;

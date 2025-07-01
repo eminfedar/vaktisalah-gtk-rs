@@ -1,0 +1,25 @@
+using Gtk 4.0;
+
+template $RowPrayerTime: Box {
+    title: "";
+    value: "";
+    vexpand: true;
+
+    Box {
+        // Margins
+        margin-bottom: 11;
+        margin-top: 11;
+        margin-start: 11;
+        margin-end: 11;
+
+        Label {
+            label: bind template.title;
+            hexpand: true;
+            halign: start;
+        }
+
+        Label {
+            label: bind template.value;
+        }
+    }
+}

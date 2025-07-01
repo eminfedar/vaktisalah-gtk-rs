@@ -1,9 +1,11 @@
 using Gtk 4.0;
 using Adw 1;
 
+$RowPrayerTime dummy_row {}
+
 template $MainWindow: Adw.ApplicationWindow {
   width-request: 280;
-  default-height: 453;
+  default-height: 460;
   hide-on-close: true;
   // District Info
   district-title: "";
@@ -58,8 +60,6 @@ template $MainWindow: Adw.ApplicationWindow {
             spacing: 7;
 
             Label {
-              margin-bottom: 5;
-
               styles [
                 "title-2",
               ]
@@ -68,60 +68,22 @@ template $MainWindow: Adw.ApplicationWindow {
             }
 
             Box {
-              spacing: 7;
+              orientation: vertical;
+              valign: center;
+              halign: center;
+              margin-top: 5;
+              margin-bottom: 5;
 
-              Button {
-                styles [
-                  "card",
-                ]
-
-                icon-name: "go-previous";
-                width-request: 42;
-                clicked => $on_btn_prev_date_clicked() swapped;
-                visible: false;
+              Label {
+                label: bind template.gregorian-date;
               }
 
-              ListBox {
+              Label {
                 styles [
-                  "boxed-list",
+                  "success",
                 ]
 
-                selection-mode: none;
-
-                Adw.ActionRow {
-                  hexpand: true;
-
-                  child: Box {
-                    orientation: vertical;
-                    valign: center;
-                    halign: center;
-                    margin-top: 5;
-                    margin-bottom: 5;
-
-                    Label {
-                      label: bind template.gregorian-date;
-                    }
-
-                    Label {
-                      styles [
-                        "success",
-                      ]
-
-                      label: bind template.hijri-date;
-                    }
-                  };
-                }
-              }
-
-              Button {
-                styles [
-                  "card",
-                ]
-
-                width-request: 42;
-                icon-name: "go-next";
-                clicked => $on_btn_next_date_clicked() swapped;
-                visible: false;
+                label: bind template.hijri-date;
               }
             }
 
@@ -137,139 +99,81 @@ template $MainWindow: Adw.ApplicationWindow {
               ScrolledWindow {
                 hexpand: true;
 
-                ListBox {
-                  show-separators: true;
-
-                  styles [
-                    "small-boxes",
-                  ]
-
+                Box {
+                  orientation: vertical;
                   vexpand: true;
-                  selection-mode: none;
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Fajr");
-                    }
-
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Fajr");
+                    value: bind template.time-fajr;
                     css-classes: bind $if_style(0, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-fajr;
-                    }
                   }
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Sunrise");
-                    }
+                  Separator {}
 
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Sunrise");
+                    value: bind template.time-sunrise;
                     css-classes: bind $if_style(1, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-sunrise;
-                    }
                   }
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Dhuhr");
-                    }
+                  Separator {}
 
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Dhuhr");
+                    value: bind template.time-dhuhr;
                     css-classes: bind $if_style(2, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-dhuhr;
-                    }
                   }
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Asr");
-                    }
+                  Separator {}
 
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Asr");
+                    value: bind template.time-asr;
                     css-classes: bind $if_style(3, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-asr;
-                    }
                   }
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Maghrib");
-                    }
+                  Separator {}
 
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Maghrib");
+                    value: bind template.time-maghrib;
                     css-classes: bind $if_style(4, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-maghrib;
-                    }
                   }
 
-                  Adw.ActionRow {
-                    [prefix]
-                    Label {
-                      label: _("Isha");
-                    }
+                  Separator {}
 
-                    vexpand: true;
+                  $RowPrayerTime {
+                    title: _("Isha");
+                    value: bind template.time-isha;
                     css-classes: bind $if_style(5, template.current-prayer) as <$GStrv>;
-
-                    [suffix]
-                    Label {
-                      label: bind template.time-isha;
-                    }
                   }
                 }
               }
             }
 
-            ListBox {
-              styles [
-                "boxed-list",
-              ]
+            Box {
+              orientation: vertical;
 
-              selection-mode: none;
+              Label {
+                margin-top: 7;
 
-              Box {
-                orientation: vertical;
+                styles [
+                  "title-3",
+                ]
 
-                Label {
-                  margin-top: 9;
+                label: bind template.next-prayer-name;
+              }
 
-                  styles [
-                    "title-3",
-                  ]
+              Label {
+                margin-bottom: 7;
 
-                  label: bind template.next-prayer-name;
-                }
+                styles [
+                  "success",
+                  "title-3",
+                ]
 
-                Label {
-                  margin-bottom: 9;
-
-                  styles [
-                    "success",
-                    "title-3",
-                  ]
-
-                  label: bind template.next-prayer-time;
-                }
+                label: bind template.next-prayer-time;
               }
             }
           }

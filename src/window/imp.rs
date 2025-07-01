@@ -10,6 +10,7 @@ use gtk::StringList;
 
 use crate::prayer::PrayerTimesWithDate;
 use crate::preferences::PreferencesJson;
+use crate::rowprayertime::RowPrayerTime;
 
 #[derive(Debug)]
 pub enum Message {
@@ -25,6 +26,9 @@ pub enum Message {
 pub struct MainWindow {
     #[template_child]
     pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+
+    #[template_child]
+    pub dummy_row: TemplateChild<RowPrayerTime>,
 
     #[template_child]
     pub navigation_view: TemplateChild<adw::NavigationView>,

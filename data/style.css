@@ -1,7 +1,3 @@
-.small-boxes box {
-    min-height: 21px;
-}
-
-.small-boxes row.success {
+box.success {
     background-color: rgba(0, 200, 0, 0.1);
 }
