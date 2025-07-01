@@ -33,7 +33,15 @@ impl Default for PreferencesJson {
         if preferences_pathbuf.exists() {
             let preferences_str = std::fs::read_to_string(preferences_pathbuf.as_path()).unwrap();
 
-            serde_json::from_str(preferences_str.as_str()).unwrap()
+            match serde_json::from_str(preferences_str.as_str()) {
+                Ok(r) => r,
+                Err(e) => {
+                    eprintln!("Couldn't read preferences.json: {e}");
+                    eprintln!("Using the default preferences.");
+
+                    serde_json::from_str(PREFERENCES_TEMPLATE).unwrap()
+                }
+            }
         } else {
             std::fs::create_dir_all(preferences_pathbuf.parent().unwrap()).unwrap();
             std::fs::write(preferences_pathbuf.as_path(), PREFERENCES_TEMPLATE).unwrap();
