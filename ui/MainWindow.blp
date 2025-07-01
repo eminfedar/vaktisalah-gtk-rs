@@ -278,6 +278,14 @@ template $MainWindow: Adw.ApplicationWindow {
               }
 
               Label {
+                styles [
+                  "dim-label",
+                ]
+
+                label: "v2.4.3";
+              }
+
+              Label {
                 use-markup: true;
                 label: _("<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This project's source code is open.</small></a>");
               }

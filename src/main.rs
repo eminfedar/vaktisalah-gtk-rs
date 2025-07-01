@@ -126,7 +126,10 @@ fn handle_tray(receiver: Receiver<TrayMessage>, app: adw::Application) {
                     }
                     TrayMessage::Exit => app.quit(),
                 },
-                Err(e) => eprintln!("error receiving: {e}"),
+                Err(e) => {
+                    eprintln!("error receiving: {e}");
+                    break;
+                }
             }
         }
     });
