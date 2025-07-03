@@ -38,9 +38,19 @@
       <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_window.png</image>
     </screenshot>
 
+      <screenshot type="default">
+      <caption>Main Window - Dark</caption>
+      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/main_window_dark.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Settings Window - Dark</caption>
+      <image type="source">https://raw.githubusercontent.com/eminfedar/vaktisalah-gtk-rs/main/export/settings_window_dark.png</image>
+    </screenshot>
+
   </screenshots>
   
   <releases>
+    <release version="2.4.4" date="2025-07-03"></release>
     <release version="2.4.0" date="2025-06-29"></release>
     <release version="2.3.2" date="2025-02-07"></release>
     <release version="2.3.1" date="2024-04-30"></release>
