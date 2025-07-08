@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-30 02:16+0300\n"
+"PO-Revision-Date: 2025-07-08 11:35+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: ui/MainWindow.blp:153
+msgid "Fajr"
+msgstr "Fajr"
+
+#: ui/MainWindow.blp:168
+msgid "Sunrise"
+msgstr "Zonsopkomst"
+
+#: ui/MainWindow.blp:183
+msgid "Dhuhr"
+msgstr "Dhuhr"
+
+#: ui/MainWindow.blp:198
+msgid "Asr"
+msgstr "Asr"
+
+#: ui/MainWindow.blp:213
+msgid "Maghrib"
+msgstr "Maghrib"
+
+#: ui/MainWindow.blp:228
+msgid "Isha"
+msgstr "Isha"
+
+#: ui/MainWindow.blp:306
+msgid "Country"
+msgstr "Land"
+
+#: ui/MainWindow.blp:316
+msgid "City"
+msgstr "Plaats"
+
+#: ui/MainWindow.blp:326
+msgid "District"
+msgstr "District"
+
+#: ui/MainWindow.blp:344
+msgid "Warn Min."
+msgstr "Herinnering tonen"
+
+#: ui/MainWindow.blp:345
+msgid "Shows a notification minutes before the next prayer time."
+msgstr ""
+"Toon een melding een x-aantal minuten voorafgaand aan het volgende "
+"gebedsmoment."
+
+#: ui/MainWindow.blp:370
+msgid "Update Prayer Times"
+msgstr "Gebedstijden bijwerken"
+
+#: ui/MainWindow.blp:378
+msgid ""
+"<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This "
+"project's source code is open.</small></a>"
+msgstr ""
+"<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>Dit "
+"project is opensource.</small></a>"
+
+#: src/window/mod.rs:221
+#, python-brace-format
+msgid "{min} minutes left {prayer}"
+msgstr "{prayer} begint over {min} minuten"
+
+#: src/window/mod.rs:327
+msgid "Prayer Times Updated."
+msgstr "De gebedstijden zijn bijgewerkt."
+
+#: src/window/mod.rs:336
+msgid "Failed to get prayer times!"
+msgstr "De gebedstijden kunnen niet worden opgehaald!"
+
+#: src/window/mod.rs:387
+msgid "Getting Cities..."
+msgstr "Bezig met ophalen van plaatsen…"
+
+#: src/window/mod.rs:430
+msgid "Getting Districts..."
+msgstr "Bezig met ophalen van districten…"
+
+#: src/window/mod.rs:491
+msgid "Getting Prayer Times..."
+msgstr "Bezig met ophalen van gebedstijden…"
+
+#: src/trayicon.rs:43
+msgid "Show"
+msgstr "Bekijken"
+
+#: src/trayicon.rs:58
+msgid "Exit"
+msgstr "Afsluiten"
+
+#: src/prayer.rs:40 src/prayer.rs:46
+msgid "to Fajr"
+msgstr "Fajr"
+
+#: src/prayer.rs:41
+msgid "to Sunrise"
+msgstr "Zonsopkomst"
+
+#: src/prayer.rs:42
+msgid "to Dhuhr"
+msgstr "Dhuhr"
+
+#: src/prayer.rs:43
+msgid "to Asr"
+msgstr "Asr"
+
+#: src/prayer.rs:44
+msgid "to Maghrib"
+msgstr "Maghrib"
+
+#: src/prayer.rs:45
+msgid "to Isha"
+msgstr "Isha"
