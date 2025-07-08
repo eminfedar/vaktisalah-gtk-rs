@@ -1,6 +1,6 @@
 [package]
 name = "vaktisalah-gtk-rs"
-version = "2.4.3"
+version = "2.4.5"
 edition = "2021"
 build = "build.rs"
 
