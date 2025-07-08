@@ -3,8 +3,11 @@
   <id>io.github.eminfedar.vaktisalah-gtk-rs</id>
   
   <name>Vakt-i Salah</name>
-  <developer_name>Emin Fedar</developer_name>
-  <summary>Simple prayer times app</summary>
+  <developer id="io.github.eminfedar">
+    <name>Emin Fedar</name>
+    <url>https://github.com/eminfedar</url>
+  </developer>
+  <summary>Simple prayer/adhan times app</summary>
   <url type="homepage">https://github.com/eminfedar/vaktisalah-gtk-rs</url>
   
   <metadata_license>CC0-1.0</metadata_license>
@@ -12,11 +15,15 @@
   
   <description>
     <p>
-      Simple prayer/adhan times app.
-      
+      Simple Prayer/Adhan Times App.
+
+
       Prayer times are getting fetched every month from Türkiye&apos;s Diyanet İşleri Başkanlığı (Presidency of Religious Affairs).
 
+
       Network Permission: Fetching prayer times from internet.
+
+
       Microphone/Audio Permission: Play notification sound when X minutes left. No microphone access. 
     </p>
   </description>
@@ -50,6 +57,7 @@
   </screenshots>
   
   <releases>
+    <release version="2.4.5" date="2025-07-08"></release>
     <release version="2.4.4" date="2025-07-03"></release>
     <release version="2.4.0" date="2025-06-29"></release>
     <release version="2.3.2" date="2025-02-07"></release>
