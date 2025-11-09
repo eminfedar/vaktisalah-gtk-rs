@@ -50,6 +50,8 @@ pub struct MainWindow {
     pub gregorian_date: RefCell<String>,
     #[property(get, set)]
     pub hijri_date: RefCell<String>,
+    #[property(get, set)]
+    pub current_time: RefCell<String>,
 
     // Times
     #[property(get, set)]

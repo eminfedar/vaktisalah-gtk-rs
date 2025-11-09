@@ -13,6 +13,7 @@ template $MainWindow: Adw.ApplicationWindow {
   // Date
   gregorian-date: "-";
   hijri-date: "-";
+  current-time: "--:--";
   // Times
   time-fajr: "--:--";
   time-sunrise: "--:--";
@@ -85,6 +86,16 @@ template $MainWindow: Adw.ApplicationWindow {
                 ]
 
                 label: bind template.hijri-date;
+              }
+
+              Label {
+                margin-top: 7;
+
+                styles [
+                  "title-3",
+                ]
+
+                label: bind template.current-time;
               }
             }
 
