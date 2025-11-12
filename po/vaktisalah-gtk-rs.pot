@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-08 23:00+0300\n"
+"POT-Creation-Date: 2025-11-12 15:31+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,82 +17,82 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ui/MainWindow.blp:108
+#: ui/MainWindow.blp:119
 msgid "Fajr"
 msgstr ""
 
-#: ui/MainWindow.blp:116
+#: ui/MainWindow.blp:127
 msgid "Sunrise"
 msgstr ""
 
-#: ui/MainWindow.blp:124
+#: ui/MainWindow.blp:135
 msgid "Dhuhr"
 msgstr ""
 
-#: ui/MainWindow.blp:132
+#: ui/MainWindow.blp:143
 msgid "Asr"
 msgstr ""
 
-#: ui/MainWindow.blp:140
+#: ui/MainWindow.blp:151
 msgid "Maghrib"
 msgstr ""
 
-#: ui/MainWindow.blp:148
+#: ui/MainWindow.blp:159
 msgid "Isha"
 msgstr ""
 
-#: ui/MainWindow.blp:211
+#: ui/MainWindow.blp:222
 msgid "Country"
 msgstr ""
 
-#: ui/MainWindow.blp:221
+#: ui/MainWindow.blp:232
 msgid "City"
 msgstr ""
 
-#: ui/MainWindow.blp:231
+#: ui/MainWindow.blp:242
 msgid "District"
 msgstr ""
 
-#: ui/MainWindow.blp:249
+#: ui/MainWindow.blp:260
 msgid "Warn Min."
 msgstr ""
 
-#: ui/MainWindow.blp:250
+#: ui/MainWindow.blp:261
 msgid "Shows a notification minutes before the next prayer time."
 msgstr ""
 
-#: ui/MainWindow.blp:275
+#: ui/MainWindow.blp:286
 msgid "Update Prayer Times"
 msgstr ""
 
-#: ui/MainWindow.blp:291
+#: ui/MainWindow.blp:302
 msgid ""
 "<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This "
 "project's source code is open.</small></a>"
 msgstr ""
 
-#: src/window/mod.rs:242
+#: src/window/mod.rs:247
 #, python-brace-format
 msgid "{min} minutes left {prayer}"
 msgstr ""
 
-#: src/window/mod.rs:348
+#: src/window/mod.rs:353
 msgid "Prayer Times Updated."
 msgstr ""
 
-#: src/window/mod.rs:357
+#: src/window/mod.rs:362
 msgid "Failed to get prayer times!"
 msgstr ""
 
-#: src/window/mod.rs:408
+#: src/window/mod.rs:413
 msgid "Getting Cities..."
 msgstr ""
 
-#: src/window/mod.rs:448
+#: src/window/mod.rs:453
 msgid "Getting Districts..."
 msgstr ""
 
-#: src/window/mod.rs:502
+#: src/window/mod.rs:507
 msgid "Getting Prayer Times..."
 msgstr ""
 

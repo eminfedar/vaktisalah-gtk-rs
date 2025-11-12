@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-08 23:00+0300\n"
+"POT-Creation-Date: 2025-11-12 15:31+0300\n"
 "PO-Revision-Date: 2025-04-02 11:15+0300\n"
 "Last-Translator: Emin Fedar <eminfedar@gmail.com>\n"
 "Language-Team: Turkish\n"
@@ -16,55 +16,55 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 48.0\n"
 
-#: ui/MainWindow.blp:108
+#: ui/MainWindow.blp:119
 msgid "Fajr"
 msgstr "İmsak"
 
-#: ui/MainWindow.blp:116
+#: ui/MainWindow.blp:127
 msgid "Sunrise"
 msgstr "Güneş"
 
-#: ui/MainWindow.blp:124
+#: ui/MainWindow.blp:135
 msgid "Dhuhr"
 msgstr "Öğle"
 
-#: ui/MainWindow.blp:132
+#: ui/MainWindow.blp:143
 msgid "Asr"
 msgstr "İkindi"
 
-#: ui/MainWindow.blp:140
+#: ui/MainWindow.blp:151
 msgid "Maghrib"
 msgstr "Akşam"
 
-#: ui/MainWindow.blp:148
+#: ui/MainWindow.blp:159
 msgid "Isha"
 msgstr "Yatsı"
 
-#: ui/MainWindow.blp:211
+#: ui/MainWindow.blp:222
 msgid "Country"
 msgstr "Ülke"
 
-#: ui/MainWindow.blp:221
+#: ui/MainWindow.blp:232
 msgid "City"
 msgstr "Şehir"
 
-#: ui/MainWindow.blp:231
+#: ui/MainWindow.blp:242
 msgid "District"
 msgstr "İlçe"
 
-#: ui/MainWindow.blp:249
+#: ui/MainWindow.blp:260
 msgid "Warn Min."
 msgstr "Uyarı Dk."
 
-#: ui/MainWindow.blp:250
+#: ui/MainWindow.blp:261
 msgid "Shows a notification minutes before the next prayer time."
 msgstr "Gelecek vakitten dakikalar önce bildirim gösterir."
 
-#: ui/MainWindow.blp:275
+#: ui/MainWindow.blp:286
 msgid "Update Prayer Times"
 msgstr "Vakitleri Güncelle"
 
-#: ui/MainWindow.blp:291
+#: ui/MainWindow.blp:302
 msgid ""
 "<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>This "
 "project's source code is open.</small></a>"
@@ -72,28 +72,28 @@ msgstr ""
 "<a href='https://github.com/eminfedar/vaktisalah-gtk-rs'><small>Bu projenin "
 "kaynak kodları açıktır.</small></a>"
 
-#: src/window/mod.rs:242
+#: src/window/mod.rs:247
 #, python-brace-format
 msgid "{min} minutes left {prayer}"
 msgstr "{prayer} {min} dakika kaldı"
 
-#: src/window/mod.rs:348
+#: src/window/mod.rs:353
 msgid "Prayer Times Updated."
 msgstr "Vakitleri Güncellendi."
 
-#: src/window/mod.rs:357
+#: src/window/mod.rs:362
 msgid "Failed to get prayer times!"
 msgstr "Vakitler alınamadı!"
 
-#: src/window/mod.rs:408
+#: src/window/mod.rs:413
 msgid "Getting Cities..."
 msgstr "Şehirler Alınıyor..."
 
-#: src/window/mod.rs:448
+#: src/window/mod.rs:453
 msgid "Getting Districts..."
 msgstr "İlçeler Alınıyor..."
 
-#: src/window/mod.rs:502
+#: src/window/mod.rs:507
 msgid "Getting Prayer Times..."
 msgstr "Vakitler Alınıyor..."
 
