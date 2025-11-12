@@ -18,3 +18,4 @@ build-dir
 flatpak-cargo-generator.py
 
 .vscode
+.flatpak-repo/
