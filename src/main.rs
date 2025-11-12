@@ -56,7 +56,10 @@ fn main() -> glib::ExitCode {
     setup_localization();
 
     // Create a new application
-    let app = adw::Application::builder().application_id(APP_ID).build();
+    let app = adw::Application::builder()
+        .application_id(APP_ID)
+        .flags(gio::ApplicationFlags::HANDLES_COMMAND_LINE)
+        .build();
 
     app.connect_startup(move |a| {
         load_css();
@@ -66,6 +69,7 @@ fn main() -> glib::ExitCode {
         handle_tray(rx, a.clone());
     });
     app.connect_activate(build_ui);
+    app.connect_command_line(handle_command_line);
 
     // Run the application
     app.run()
@@ -90,6 +94,35 @@ fn load_css() {
         &provider,
         gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
     );
+}
+
+fn handle_command_line(
+    app: &adw::Application,
+    cmd_line: &gio::ApplicationCommandLine,
+) -> i32 {
+    let args = cmd_line.arguments();
+    let args_str: Vec<String> = args.iter().map(|arg| arg.to_string_lossy().to_string()).collect();
+
+    // Check if --toggle flag is present
+    if args_str.iter().any(|arg| arg == "--toggle") {
+        // Toggle window visibility
+        let windows = app.windows();
+        if !windows.is_empty() {
+            let window = windows.first().unwrap();
+            if window.is_visible() {
+                window.close();
+            } else {
+                app.activate();
+            }
+        } else {
+            app.activate();
+        }
+    } else {
+        // Normal activation
+        app.activate();
+    }
+
+    0
 }
 
 fn build_ui(app: &adw::Application) {

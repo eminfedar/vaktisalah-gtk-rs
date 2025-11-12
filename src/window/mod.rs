@@ -217,6 +217,11 @@ impl MainWindow {
         let imp = self.imp();
         let pref = &imp.preferences.borrow().preferences;
 
+        // Update current time
+        let now = Local::now();
+        let current_time_str = now.format("%H:%M").to_string();
+        self.set_current_time(current_time_str);
+
         let remaining_time = prayer::calculate_remaining_time(
             &imp.todays_prayers.borrow(),
             &imp.tomorrows_prayers.borrow(),
