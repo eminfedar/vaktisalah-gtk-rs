@@ -25,7 +25,6 @@ use window::MainWindow;
 
 const APP_ID: &str = "io.github.eminfedar.vaktisalah-gtk-rs";
 const LOCALIZATION_DOMAIN_NAME: &str = "vaktisalah-gtk-rs";
-// const LOCALIZATION_PATH: &str = "/app/share/locale";
 
 static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
     println!("Runtime initialized");
@@ -77,7 +76,20 @@ fn main() -> glib::ExitCode {
 
 fn setup_localization() {
     textdomain(LOCALIZATION_DOMAIN_NAME).unwrap();
-    // bindtextdomain(LOCALIZATION_DOMAIN_NAME, LOCALIZATION_PATH).unwrap();
+
+    match std::fs::exists("/app/") {
+        Ok(r) => {
+            if r {
+                bindtextdomain(LOCALIZATION_DOMAIN_NAME, "/app/share/locale").unwrap();
+            } else {
+                bindtextdomain(LOCALIZATION_DOMAIN_NAME, "/usr/share/locale").unwrap();
+            }
+        }
+        Err(e) => {
+            eprintln!("/app is_exists error: {e}");
+            bindtextdomain(LOCALIZATION_DOMAIN_NAME, "/usr/share/locale").unwrap();
+        }
+    }
     bind_textdomain_codeset(LOCALIZATION_DOMAIN_NAME, "UTF-8").unwrap();
 
     println!("Current locale: {}", *LOCALE);
