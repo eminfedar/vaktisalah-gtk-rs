@@ -25,7 +25,7 @@ use window::MainWindow;
 
 const APP_ID: &str = "io.github.eminfedar.vaktisalah-gtk-rs";
 const LOCALIZATION_DOMAIN_NAME: &str = "vaktisalah-gtk-rs";
-const LOCALIZATION_PATH: &str = "/app/share/locale";
+// const LOCALIZATION_PATH: &str = "/app/share/locale";
 
 static RUNTIME: LazyLock<runtime::Runtime> = LazyLock::new(|| {
     println!("Runtime initialized");
@@ -77,7 +77,7 @@ fn main() -> glib::ExitCode {
 
 fn setup_localization() {
     textdomain(LOCALIZATION_DOMAIN_NAME).unwrap();
-    bindtextdomain(LOCALIZATION_DOMAIN_NAME, LOCALIZATION_PATH).unwrap();
+    // bindtextdomain(LOCALIZATION_DOMAIN_NAME, LOCALIZATION_PATH).unwrap();
     bind_textdomain_codeset(LOCALIZATION_DOMAIN_NAME, "UTF-8").unwrap();
 
     println!("Current locale: {}", *LOCALE);
@@ -96,12 +96,12 @@ fn load_css() {
     );
 }
 
-fn handle_command_line(
-    app: &adw::Application,
-    cmd_line: &gio::ApplicationCommandLine,
-) -> i32 {
+fn handle_command_line(app: &adw::Application, cmd_line: &gio::ApplicationCommandLine) -> i32 {
     let args = cmd_line.arguments();
-    let args_str: Vec<String> = args.iter().map(|arg| arg.to_string_lossy().to_string()).collect();
+    let args_str: Vec<String> = args
+        .iter()
+        .map(|arg| arg.to_string_lossy().to_string())
+        .collect();
 
     // Check if --toggle flag is present
     if args_str.iter().any(|arg| arg == "--toggle") {

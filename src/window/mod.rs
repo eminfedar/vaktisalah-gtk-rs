@@ -375,7 +375,7 @@ impl MainWindow {
     #[template_callback]
     fn if_style(&self, prayer_number: i32, current_prayer: i32) -> Vec<String> {
         if prayer_number == (current_prayer % 6) {
-            vec!["success".to_string(), "title-3".to_string()]
+            vec!["accent".to_string(), "title-3".to_string()]
         } else {
             Vec::new()
         }

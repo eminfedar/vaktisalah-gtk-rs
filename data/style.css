@@ -1,3 +1,3 @@
-box.success {
-    background-color: rgba(0, 200, 0, 0.1);
+box.accent {
+    background-color: alpha(@accent_bg_color, 0.1);
 }
